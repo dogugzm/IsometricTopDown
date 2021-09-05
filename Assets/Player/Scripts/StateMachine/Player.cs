@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector]public float InputX;
     [HideInInspector]public float InputZ;
-    [HideInInspector] public float Speed { get; private set;}
+    [HideInInspector] public float Speed;
     [HideInInspector] public Vector3 desiredMoveDirection {get;  set;}
 
     [HideInInspector] public static Vector3 closestPosition;

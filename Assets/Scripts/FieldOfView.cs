@@ -25,7 +25,7 @@ public class FieldOfView : MonoBehaviour
             Vector3 direction = enemyCollider.transform.position - Player.closestPosition;
             if (Vector3.Angle(transform.forward, direction) < angle / 2) //görüþ alanýmýn içinde  //tag li revize gelecek
             {
-                enemyCollider.GetComponent<Enemy>().Hurt(50);
+                enemyCollider.GetComponent<Entity>().goToHurtState = true;
                 
                 //hurt animation
                 //change material            

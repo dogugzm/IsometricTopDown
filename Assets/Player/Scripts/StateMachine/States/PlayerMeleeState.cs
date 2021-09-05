@@ -19,11 +19,13 @@ public class PlayerMeleeState : PlayerState
     public override void Exit()
     {
         base.Exit();
+        player.Speed = 0;
     }
 
     public override void LogicalUpdate()
     {
-        base.LogicalUpdate();  
+        base.LogicalUpdate();
+        player.controller.Move(player.desiredMoveDirection * 2f * Time.deltaTime);
         if (isMeleeAnimationFinished)
         {
             if (player.Speed > 0.1f)
