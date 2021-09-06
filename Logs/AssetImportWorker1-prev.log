@@ -15,11 +15,11 @@ E:/UnityProjects/IsometricTopDown
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-63554
+54813
 Successfully changed project path to: E:/UnityProjects/IsometricTopDown
 E:/UnityProjects/IsometricTopDown
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 106.20 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 71.69 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.16f1 (049d6eca3c44)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.16f1/Editor/Data/Resources/UnitySubsystems
@@ -31,10 +31,9 @@ Direct3D:
     Vendor:   
     VRAM:     2010 MB
     Driver:   30.0.14.7111
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.16f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.16f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.16f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56080
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56248
 Begin MonoManager ReloadAssembly

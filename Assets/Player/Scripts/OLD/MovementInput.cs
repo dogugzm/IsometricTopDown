@@ -104,7 +104,7 @@ public class MovementInput : MonoBehaviour {
             }
             rb.AddForce(transform.forward, ForceMode.Force);
             anim.SetTrigger("isRolling");
-            StartCoroutine(VolumeTest.instance.RollEffect());
+            
         }
     } 
 

@@ -42,12 +42,7 @@ public class PlayerRollState : PlayerState
 
     private void Roll()
     {
-
-
-        
         player.Anim.SetTrigger("isRolling");
-        player.StartCoroutine(VolumeTest.instance.RollEffect());
-
     }
 
     

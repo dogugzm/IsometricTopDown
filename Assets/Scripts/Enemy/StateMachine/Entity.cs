@@ -12,20 +12,24 @@ public class Entity : MonoBehaviour
     public Animator anim { get; private set; }
     public NavMeshAgent agent { get; private set; }
 
-   public Transform Target { get; private set; }
+    public Transform Target { get; private set; }
+    public SkinnedMeshRenderer meshRend;
 
     protected float health;
     [SerializeField] protected float maxHealth;
     public float distance;
     public bool goToHurtState;
     public float damageTaken;
-
+    public float knockBackDistance;
+    public bool isAttackAnimFinished;
+    [SerializeField] private LayerMask playerLayer; 
 
 
 
     public virtual void Start()
     {
         goToHurtState = false;
+        isAttackAnimFinished = false;
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         health = maxHealth;
         rb = GetComponent<Rigidbody>();
@@ -50,9 +54,9 @@ public class Entity : MonoBehaviour
         health -= damage;
     }
 
-    public void DestroyMe()
+    public void DestroyMe(float time)
     {
-        Destroy(gameObject);
+        Destroy(gameObject,time);
     }
 
     public bool IsEnemyDead() 
@@ -67,4 +71,32 @@ public class Entity : MonoBehaviour
         }
     }
 
+    #region Animation Event
+
+    public void AttackAnimFinished()
+    {
+        isAttackAnimFinished = true;
+    }
+
+    public void CheckPlayerIfInsideAttackRange()
+    {
+        
+        Collider[] players = Physics.OverlapSphere(transform.position, 2f, playerLayer);
+
+        foreach (Collider player in players) //range içinde 
+        {
+            Debug.Log(player.gameObject.name + ": hitted");
+
+        }
+    }
+    #endregion
+
+    #region GIZMOS
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, 2f);
+    }
+
+    #endregion
 }
