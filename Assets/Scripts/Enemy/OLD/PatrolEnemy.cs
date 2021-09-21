@@ -14,6 +14,7 @@ public class PatrolEnemy : Enemy
     {
         base.Start();
         randomPoint = new Vector3(Random.Range(transform.position.x + maxDistance, transform.position.x - maxDistance), transform.position.y, Random.Range(transform.position.z + maxDistance, transform.position.z - maxDistance));
+        agent.SetDestination(randomPoint);    
     }
 
     protected override void Move()

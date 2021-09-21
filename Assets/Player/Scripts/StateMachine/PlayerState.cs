@@ -23,6 +23,7 @@ public class PlayerState
 
     public virtual void Enter()
     {
+        player.Anim.SetFloat("Blend", 0,0.01f,Time.deltaTime);   
         startTime = Time.time;
         isRollAnimationFinished = false;
         isMeleeAnimationFinished = false;

@@ -9,9 +9,9 @@ public class RunnerEnemy : Enemy
         base.Move();
     }
 
-    public override void Hurt(float damage)
+    public override void Hurt()
     {
-        base.Hurt(damage);
-        Debug.Log("runner enemy hurted");
+        base.Hurt();
+        
     }
 }

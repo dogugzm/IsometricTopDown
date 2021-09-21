@@ -27,15 +27,24 @@ public class SpawnerEnemy : Enemy
 
     protected override void Attack()
     {
+
         base.Attack();
+        animator.ResetTrigger("TisAttack");
         shootTimer += Time.deltaTime;
         if (shootTimer>shootRate)
         {
-
-            Instantiate(Projectile, transform.position + new Vector3(0, 1, 0), transform.rotation);
+            animator.SetTrigger("TisAttack");
+            StartCoroutine(InstantiateProjectileWithDelay(0.3f));
             shootTimer = 0;
         }
 
+    }
+
+    IEnumerator InstantiateProjectileWithDelay(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Instantiate(Projectile, transform.position + new Vector3(0, 1, 0), transform.rotation);
+        
     }
 
     private void RandomMove()
@@ -43,23 +52,11 @@ public class SpawnerEnemy : Enemy
         moveTimer += Time.deltaTime;
         if (moveTimer>moveRate)
         {
-            WaitTime(Random.Range(3,6));
             transform.position = new Vector3(Random.Range(Target.position.x + spawnDistance, Target.position.x - spawnDistance), transform.position.y, Random.Range(Target.position.z + spawnDistance, Target.position.z - spawnDistance));
-            
             moveTimer = 0;
         }
     }
 
-    IEnumerator WaitTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-    }
-
-    public override void Hurt(float damage)
-    {
-        base.Hurt(damage);
-        Debug.Log("spawner enemy hurted");
-    }
 
 
 }

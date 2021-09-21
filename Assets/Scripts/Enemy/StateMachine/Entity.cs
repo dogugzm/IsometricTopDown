@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 
 public class Entity : MonoBehaviour
@@ -22,7 +23,9 @@ public class Entity : MonoBehaviour
     public float damageTaken;
     public float knockBackDistance;
     public bool isAttackAnimFinished;
-    [SerializeField] private LayerMask playerLayer; 
+    [SerializeField] private LayerMask playerLayer;
+    public float damage;
+    public TextMeshProUGUI showState;
 
 
 
@@ -71,11 +74,21 @@ public class Entity : MonoBehaviour
         }
     }
 
+    public IEnumerator WaitTime(float time) {
+        yield return new WaitForSeconds(time);
+    }
+
+    public void ShowState(string a)
+    {
+        showState.text = a;
+    }
+
     #region Animation Event
 
     public void AttackAnimFinished()
     {
         isAttackAnimFinished = true;
+        
     }
 
     public void CheckPlayerIfInsideAttackRange()
@@ -85,7 +98,13 @@ public class Entity : MonoBehaviour
 
         foreach (Collider player in players) //range içinde 
         {
-            Debug.Log(player.gameObject.name + ": hitted");
+            Player playerScript = player.GetComponent<Player>();
+            if (playerScript.StateMachine.CurrentState== playerScript.RollState || playerScript.StateMachine.CurrentState == playerScript.HitState || playerScript.StateMachine.CurrentState == playerScript.MeleeState)
+            {
+                return;
+            }
+            playerScript.damageTaken = damage;
+            playerScript.StateMachine.ChangeState(playerScript.HitState);
 
         }
     }

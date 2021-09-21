@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class KnockBackState : State
 {
-    
-    public KnockBackState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
+    public KnockBackState(Entity entity, FiniteStateMachine stateMachine, string name) : base(entity, stateMachine, name)
     {
     }
 
     public override void Enter()
     {
         base.Enter();
-        entity.goToHurtState = false;
+        
         
     }
 

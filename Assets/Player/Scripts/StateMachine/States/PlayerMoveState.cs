@@ -10,7 +10,7 @@ public class PlayerMoveState : PlayerState
 
     public override void Enter()
     {
-        
+        player.Anim.SetFloat("Blend", 0);
         base.Enter();
     }
 

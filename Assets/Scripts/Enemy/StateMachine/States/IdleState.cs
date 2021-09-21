@@ -5,7 +5,7 @@ using UnityEngine;
 public class IdleState : State
 {
     
-    public IdleState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
+    public IdleState(Entity entity, FiniteStateMachine stateMachine,string name) : base(entity, stateMachine,name)
     {
         
     }
@@ -13,7 +13,7 @@ public class IdleState : State
     public override void Enter() 
     {
         base.Enter();
-        Debug.Log("enemy in idle");
+        
         entity.agent.isStopped = true;
         entity.agent.ResetPath();
     }

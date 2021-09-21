@@ -10,28 +10,36 @@ public class FieldOfView : MonoBehaviour
     public float angle;
     [SerializeField] LayerMask enemyLayers;
  
-    private void Update()
-    {
-        
-    }
-
     public void AttackToEnemies() //MARKER: Animaton Event
     {
+        
         Collider[] hitEnemies = Physics.OverlapSphere(hitPoint.transform.position, range, enemyLayers);
 
-        foreach (Collider enemyCollider in hitEnemies) //range içinde 
+        foreach (Collider enemyCollider in hitEnemies) 
         {
-            Debug.Log(enemyCollider.name);
+            
             Vector3 direction = enemyCollider.transform.position - Player.closestPosition;
-            if (Vector3.Angle(transform.forward, direction) < angle / 2) //görüþ alanýmýn içinde  //tag li revize gelecek
+            if (Vector3.Angle(transform.forward, direction) < angle / 2) 
             {
-                enemyCollider.GetComponent<Entity>().goToHurtState = true;
+                if (enemyCollider.gameObject.layer==7)
+                {
+                     //enemyCollider.GetComponent<Entity>().goToHurtState = true;
+                     enemyCollider.GetComponent<Enemy>().Hurt();
+                }
+                else
+                {
+                    
+                    enemyCollider.GetComponent<Projectile>().GoBack(transform.forward);    
+                }   
                 
-                //hurt animation
-                //change material            
+               
+                
+                          
             }
 
         }
     }
+
+
    
 }

@@ -8,18 +8,23 @@ public class Enemy : MonoBehaviour
 {
     
     [SerializeField] private string enemyName;
-    
-    private float health;
     [SerializeField] private float maxHealth;
     [SerializeField] private float distance;
-    protected NavMeshAgent agent;
+    [SerializeField]private SkinnedMeshRenderer meshRenderer;
+    [SerializeField] protected ParticleSystem hitParticle;
+
+    private float health;
     bool knockBack;
+    protected float damage = 40f;
+    protected private Transform Target; //it is player
+    protected NavMeshAgent agent;
+    protected Animator animator;
 
 
-    [SerializeField] protected private Transform Target; //it is player
 
     protected virtual void Start()
     {
+        animator = GetComponent<Animator>();
         knockBack = false;
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
@@ -75,7 +80,10 @@ public class Enemy : MonoBehaviour
         agent.angularSpeed = 0;
         agent.acceleration = 30;
         
-
+        meshRenderer.material.SetColor("_EmissionColor", Color.white);
+        meshRenderer.material.EnableKeyword("_EMISSION");
+        yield return new WaitForSeconds(0.1f);
+        meshRenderer.material.SetColor("_EmissionColor", Color.black);
         yield return new WaitForSeconds(0.2f);
 
         if (agent == null)
@@ -98,15 +106,25 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Attack()
     {
-        Debug.Log(enemyName + " is attacked");
+        
     }
     protected virtual void Death()
     {
-        Destroy(gameObject);
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
+        {
+            return;
+        }
+        animator.SetTrigger("TisDeath");
+
+        Destroy(gameObject,1f);
     }
-    public virtual void Hurt(float damage)
+    public virtual void Hurt()
     {
         StartCoroutine(KnockBack());
+        hitParticle.Play();
+        animator.SetTrigger("TisHit");
         health -= damage;
+        //animator.SetBool("isHit",false);
+
     }
 }

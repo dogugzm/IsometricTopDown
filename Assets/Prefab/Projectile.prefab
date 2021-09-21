@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 3379206650615059269}
   - component: {fileID: 3379206650615059270}
   - component: {fileID: -9211782129319797145}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Projectile
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpeed: 8
+  hitPrefab: {fileID: 1183852268493988, guid: 524e1f348f3798444b3623e8b326561f, type: 3}
 --- !u!96 &-9211782129319797145
 TrailRenderer:
   serializedVersion: 2

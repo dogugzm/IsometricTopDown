@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    public AttackState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
+    public AttackState(Entity entity, FiniteStateMachine stateMachine,string name) : base(entity, stateMachine,name)
     {
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoveState : State
 {
     
-    public MoveState(Entity entity, FiniteStateMachine stateMachine) : base(entity, stateMachine)
+    public MoveState(Entity entity, FiniteStateMachine stateMachine,string name) : base(entity, stateMachine,name)
     {
         
     }

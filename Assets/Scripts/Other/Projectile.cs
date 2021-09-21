@@ -13,11 +13,14 @@ public class Projectile : MonoBehaviour
     [SerializeField] private GameObject hitPrefab;
     private float maxLifeTime = 4f;
     private float maxLifeTimer;
+    bool goBack;
+    Vector3 goBackDirection;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        goBack=false;
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         // rb = GetComponent<Rigidbody>();
        
@@ -25,8 +28,15 @@ public class Projectile : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        transform.position = Vector3.MoveTowards(transform.position,Player.closestPosition, projectileSpeed * Time.deltaTime);
+    {   
+        if (goBack)
+        {
+            transform.Translate(transform.forward * Time.deltaTime * projectileSpeed); //TODO: fix here first
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position,Player.closestPosition, projectileSpeed * Time.deltaTime);         
+        }
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((Player.closestPosition + new Vector3(0,1,0)) - transform.position).normalized, 0.1f);
         maxLifeTimer += Time.deltaTime;
         if (maxLifeTimer>maxLifeTime)
@@ -43,5 +53,16 @@ public class Projectile : MonoBehaviour
             Destroy(a, 2f);
             Destroy(gameObject);
         }
+    }
+
+    public void GoBack(Vector3 direction)
+    {
+        goBack=true;
+        Debug.Log("GoBack");
+        goBackDirection = direction;
+
+        
+        
+       
     }
 }

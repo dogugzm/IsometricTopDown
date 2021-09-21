@@ -5,7 +5,8 @@ using UnityEngine;
 public class E1_IdleState : IdleState
 {
     private Enemy1 enemy;
-    public E1_IdleState(Entity entity, FiniteStateMachine stateMachine,Enemy1 enemy) : base(entity, stateMachine)
+
+    public E1_IdleState(Entity entity, FiniteStateMachine stateMachine,Enemy1 enemy ,string name) : base(entity, stateMachine, name)
     {
         this.enemy = enemy;
     }
@@ -28,18 +29,17 @@ public class E1_IdleState : IdleState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (entity.GetDistanceBetweenPlayer()<enemy.distance)
+        if (enemy.GetDistanceBetweenPlayer()<enemy.distance && enemy.GetDistanceBetweenPlayer()>3f)
         {
             stateMachine.ChangeState(enemy.moveState);
         }
-        if (enemy.goToHurtState)
+        else if (enemy.goToHurtState)
         {
             stateMachine.ChangeState(enemy.knockBackState);
         }
-        if (enemy.IsEnemyDead())
+        else if (enemy.IsEnemyDead() && stateMachine.currentState != enemy.deathState)
         {
             stateMachine.ChangeState(enemy.deathState);
-
         }
 
     }

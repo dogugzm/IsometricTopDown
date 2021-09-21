@@ -14,12 +14,15 @@ public class PlayerMeleeState : PlayerState
     {
         MeleeAttack();
         base.Enter();
+        player.SwordParticle.Play();
+
     }
 
     public override void Exit()
     {
         base.Exit();
         player.Speed = 0;
+        player.SwordParticle.Stop();
     }
 
     public override void LogicalUpdate()

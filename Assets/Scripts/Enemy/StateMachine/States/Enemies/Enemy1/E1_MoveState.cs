@@ -6,7 +6,7 @@ public class E1_MoveState : MoveState
 {
     private Enemy1 enemy;
 
-    public E1_MoveState(Entity entity, FiniteStateMachine stateMachine,Enemy1 enemy) : base(entity, stateMachine)
+    public E1_MoveState(Entity entity, FiniteStateMachine stateMachine,Enemy1 enemy,string name) : base(entity, stateMachine,name)
     {
         this.enemy = enemy;
     }
@@ -31,24 +31,25 @@ public class E1_MoveState : MoveState
         base.LogicUpdate();
         enemy.agent.SetDestination(enemy.Target.position);
 
-        if (entity.GetDistanceBetweenPlayer()<3f)
+        if (enemy.GetDistanceBetweenPlayer() > enemy.distance)
+        {
+            stateMachine.ChangeState(enemy.idleState);
+        }
+        else if (enemy.goToHurtState)
+        {
+            stateMachine.ChangeState(enemy.knockBackState);
+        }
+        else if (enemy.GetDistanceBetweenPlayer()<3f)
         {
             stateMachine.ChangeState(enemy.attackState);
         }
-        if (enemy.goToHurtState)
-        {
-            stateMachine.ChangeState(enemy.knockBackState);
-
-        }
-        if (enemy.IsEnemyDead())
+        
+        else if (enemy.IsEnemyDead())
         {
             stateMachine.ChangeState(enemy.deathState);
 
         }
-        if (entity.GetDistanceBetweenPlayer() > enemy.distance)
-        {
-            stateMachine.ChangeState(enemy.idleState);
-        }
+        
 
     }
 }

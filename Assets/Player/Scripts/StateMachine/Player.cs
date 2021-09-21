@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public PlayerRollState RollState { get; private set; }
     public PlayerMeleeState MeleeState { get; private set; }
     public PlayerShootState ShootState { get; private set; }
+    public PlayerHitState HitState { get; private set; }
 
 
     #endregion
@@ -39,7 +40,6 @@ public class Player : MonoBehaviour
 
 
     #endregion
-
     [HideInInspector]public float InputX;
     [HideInInspector]public float InputZ;
     [HideInInspector] public float Speed;
@@ -50,36 +50,48 @@ public class Player : MonoBehaviour
     [HideInInspector] public static Vector3 mouseClickedDir;
     public GameObject MagicBall;
 
+    public float health;
+    public float maxHealth = 100;
+    public float damageTaken;
     [Header("MOVEMENT")]
     public float Velocity;
     public float desiredRotationSpeed = 10f;
 
     private Vector3 verticalVelocity;
 
+    public ParticleSystem SwordParticle;
+    
+
     private void Awake()
     {
+        
         StateMachine = new PlayerStateMachine();
         IdleState = new PlayerIdleState(this, StateMachine, playerData,"IDLE");
         MoveState = new PlayerMoveState(this, StateMachine, playerData,"MOVE");
         RollState = new PlayerRollState(this, StateMachine, playerData, "ROLL");
         MeleeState = new PlayerMeleeState(this, StateMachine, playerData, "MELEE");
         ShootState = new PlayerShootState(this, StateMachine, playerData, "SHOOT");
+        HitState = new PlayerHitState(this, StateMachine, playerData, "HIT");
+
     }
     private void Start()
     {
         Anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
+        health = maxHealth;
         StateMachine.Initialize(IdleState);
     }
 
     private void Update()
     {
+        
         InputMagnitude();
         VerticalMovement();
         RotationJob();
         FindMeshPosition();
         StateMachine.CurrentState.LogicalUpdate();
+        
     }
 
     #region IN HERE METHODS
@@ -92,6 +104,8 @@ public class Player : MonoBehaviour
 
         //Calculate the Input Magnitude
         Speed = new Vector2(InputX, InputZ).sqrMagnitude;
+        
+        
 
     }
     private void VerticalMovement()
@@ -134,6 +148,10 @@ public class Player : MonoBehaviour
     {
         desiredMoveDirection = (Cursor.instance.pointToLook - closestPosition).normalized;
     }
+
+    
+
+
     #endregion
 
 
