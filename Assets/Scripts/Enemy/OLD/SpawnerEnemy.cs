@@ -5,57 +5,46 @@ using UnityEngine;
 
 public class SpawnerEnemy : Enemy
 {
-    private float moveRate = 2f;
-    private float moveTimer;
-
-    private float shootRate = 4.1f;
-    private float shootTimer;
-
-    
+   
+    bool active;
 
     [SerializeField] private GameObject Projectile;
     
-
+    protected override void Start() {
+        base.Start();
+        active = true;
+    }
 
     [SerializeField] private float spawnDistance;
 
     protected override void Move()
     {
-        RandomMove();
         Rotate();
-    }
-
-    protected override void Attack()
-    {
-
-        base.Attack();
-        animator.ResetTrigger("TisAttack");
-        shootTimer += Time.deltaTime;
-        if (shootTimer>shootRate)
+        if (!active)
         {
-            animator.SetTrigger("TisAttack");
-            StartCoroutine(InstantiateProjectileWithDelay(0.3f));
-            shootTimer = 0;
+            return;
         }
-
+        StartCoroutine(RandomMove());
+        
     }
 
     IEnumerator InstantiateProjectileWithDelay(float time)
     {
+        animator.SetTrigger("TisAttack");
         yield return new WaitForSeconds(time);
-        Instantiate(Projectile, transform.position + new Vector3(0, 1, 0), transform.rotation);
-        
+        Vector3 insPos = new Vector3(transform.localPosition.x,transform.localPosition.y+1,transform.localPosition.z+1.5f);
+        Instantiate(Projectile, insPos, transform.rotation);      
     }
 
-    private void RandomMove()
+    private IEnumerator RandomMove()
     {
-        moveTimer += Time.deltaTime;
-        if (moveTimer>moveRate)
-        {
+            active =false;
+            yield return new WaitForSeconds(Random.Range(2f,7f));
             transform.position = new Vector3(Random.Range(Target.position.x + spawnDistance, Target.position.x - spawnDistance), transform.position.y, Random.Range(Target.position.z + spawnDistance, Target.position.z - spawnDistance));
-            moveTimer = 0;
-        }
-    }
+            yield return new WaitForSeconds(Random.Range(1f,3f));
+            StartCoroutine(InstantiateProjectileWithDelay(0.3f));
+            active =true;
+    } 
 
 
 

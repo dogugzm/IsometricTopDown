@@ -13,6 +13,7 @@ public class PlayerHitState : PlayerState
         base.Enter();
         player.Anim.SetTrigger("isHitted");
         player.health -= player.damageTaken;
+        player.healthBar.SetHealth(player.health);
     }
 
     public override void Exit()

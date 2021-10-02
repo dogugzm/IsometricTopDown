@@ -21,16 +21,16 @@ public class FieldOfView : MonoBehaviour
             Vector3 direction = enemyCollider.transform.position - Player.closestPosition;
             if (Vector3.Angle(transform.forward, direction) < angle / 2) 
             {
-                if (enemyCollider.gameObject.layer==7)
-                {
-                     //enemyCollider.GetComponent<Entity>().goToHurtState = true;
-                     enemyCollider.GetComponent<Enemy>().Hurt();
-                }
-                else
+                if (enemyCollider.gameObject.layer==7) //enemy layer 
                 {
                     
-                    enemyCollider.GetComponent<Projectile>().GoBack(transform.forward);    
-                }   
+                     enemyCollider.GetComponent<Enemy>().Hurt();  //damagable interface dene!
+                }
+                else if (enemyCollider.gameObject.layer==9)
+                {
+                    enemyCollider.GetComponent<Projectile>().GoBack();    
+                }
+                 
                 
                
                 

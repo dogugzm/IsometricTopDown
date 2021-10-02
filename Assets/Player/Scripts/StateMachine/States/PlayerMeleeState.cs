@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMeleeState : PlayerState
 {
 
+    EquipmentController.Equipment swordState =  EquipmentController.Equipment.Sword;
 
     public PlayerMeleeState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
@@ -12,8 +13,10 @@ public class PlayerMeleeState : PlayerState
 
     public override void Enter()
     {
+        player.equipmentController.ChangeState(swordState);
         MeleeAttack();
         base.Enter();
+        player.Sword.SetActive(true);
         player.SwordParticle.Play();
 
     }
@@ -23,12 +26,15 @@ public class PlayerMeleeState : PlayerState
         base.Exit();
         player.Speed = 0;
         player.SwordParticle.Stop();
+        player.Sword.SetActive(false);
+
     }
 
     public override void LogicalUpdate()
     {
         base.LogicalUpdate();
         player.controller.Move(player.desiredMoveDirection * 2f * Time.deltaTime);
+       
         if (isMeleeAnimationFinished)
         {
             if (player.Speed > 0.1f)
@@ -43,7 +49,7 @@ public class PlayerMeleeState : PlayerState
     }
 
     private void MeleeAttack()
-    {   
+    {
        player.ChangeRotationToCursor();
        CinemachineShake.instance.ShakeCamera(1f, 0.5f);
        player.Anim.SetTrigger("isAttacking");                 

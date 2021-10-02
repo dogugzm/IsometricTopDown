@@ -4959,11 +4959,18 @@ MonoBehaviour:
   StartAnimTime: 0.3
   StopAnimTime: 0.15
   playerData: {fileID: 11400000, guid: 7b6ba8885eb13684b8366e6c27aee55d, type: 2}
+  healthBar: {fileID: 0}
   InputX: 0
   InputZ: 0
+  Speed: 0
   MagicBall: {fileID: 3379206650615059320, guid: 241a1ac0703c2fc47bc4316940334d5f, type: 3}
+  Sword: {fileID: 5218248996409083410}
+  health: 0
+  maxHealth: 100
+  damageTaken: 0
   Velocity: 6
   desiredRotationSpeed: 10
+  SwordParticle: {fileID: 0}
 --- !u!1 &8481677473834801399
 GameObject:
   m_ObjectHideFlags: 0
@@ -5730,6 +5737,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34eec57ba50264e4689123fddb9cb5bd, type: 3}
+--- !u!1 &5218248996409083410 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 34eec57ba50264e4689123fddb9cb5bd, type: 3}
+  m_PrefabInstance: {fileID: 4948215747547347779}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4837184291470367912 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 34eec57ba50264e4689123fddb9cb5bd, type: 3}

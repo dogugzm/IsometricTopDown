@@ -20,7 +20,10 @@ public class Enemy : MonoBehaviour
     protected NavMeshAgent agent;
     protected Animator animator;
 
-
+    private void Awake() {
+        this.gameObject.SetActive(false);
+        
+    }
 
     protected virtual void Start()
     {
@@ -115,7 +118,6 @@ public class Enemy : MonoBehaviour
             return;
         }
         animator.SetTrigger("TisDeath");
-
         Destroy(gameObject,1f);
     }
     public virtual void Hurt()
@@ -124,7 +126,12 @@ public class Enemy : MonoBehaviour
         hitParticle.Play();
         animator.SetTrigger("TisHit");
         health -= damage;
-        //animator.SetBool("isHit",false);
-
+        
+    }
+    public virtual void Spawn()
+    {
+        //spawn instantiate effect
+        Debug.Log("Activated");
+        this.gameObject.SetActive(true);
     }
 }

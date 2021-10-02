@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private GameObject hitPrefab;
     private float maxLifeTime = 4f;
     private float maxLifeTimer;
-    bool goBack;
+    public bool goBack;
     Vector3 goBackDirection;
 
 
@@ -31,7 +31,8 @@ public class Projectile : MonoBehaviour
     {   
         if (goBack)
         {
-            transform.Translate(transform.forward * Time.deltaTime * projectileSpeed); //TODO: fix here first
+            //transform.Translate(goBackDirection * Time.deltaTime * projectileSpeed); 
+            transform.position += goBackDirection * Time.deltaTime*(projectileSpeed+10f);
         }
         else
         {
@@ -49,20 +50,29 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameObject a  =Instantiate(hitPrefab, Player.closestPosition + new Vector3(0, 1, 0), Quaternion.identity);
-            Destroy(a, 2f);
-            Destroy(gameObject);
+            HitSomething();
+            other.GetComponent<Player>().StateMachine.ChangeState(other.GetComponent<Player>().HitState);
+        }
+        if (other.CompareTag("Enemy"))
+        {
+            HitSomething();
+            other.GetComponent<Enemy>().Hurt();
         }
     }
 
-    public void GoBack(Vector3 direction)
+    private void HitSomething()
+    {
+            GameObject a  =Instantiate(hitPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+            Destroy(a, 2f);
+            Destroy(gameObject);
+    }
+
+    public void GoBack()
     {
         goBack=true;
         Debug.Log("GoBack");
-        goBackDirection = direction;
+        goBackDirection = Target.GetComponent<Player>().desiredMoveDirection;
+        //goBackDirection.y = Player.closestPosition.y;
 
-        
-        
-       
     }
 }

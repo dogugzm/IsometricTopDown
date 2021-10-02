@@ -37,11 +37,14 @@ public class Player : MonoBehaviour
     public Animator Anim { get; private set; }
     public CharacterController controller { get; private set; }
     public Rigidbody rb { get; private set; }
+    public HealthBar healthBar;
+    public EquipmentController equipmentController;
+    public EffectController effectController;
 
 
     #endregion
-    [HideInInspector]public float InputX;
-    [HideInInspector]public float InputZ;
+    [HideInInspector] public float InputX;
+    [HideInInspector] public float InputZ;
     [HideInInspector] public float Speed;
     [HideInInspector] public Vector3 desiredMoveDirection {get;  set;}
 
@@ -49,6 +52,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public static Vector3 mouseClickedDir;
     public GameObject MagicBall;
+    public GameObject Sword;
 
     public float health;
     public float maxHealth = 100;
@@ -76,11 +80,13 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
+        Sword.SetActive(false);
         Anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
         health = maxHealth;
         StateMachine.Initialize(IdleState);
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     private void Update()
@@ -148,8 +154,6 @@ public class Player : MonoBehaviour
     {
         desiredMoveDirection = (Cursor.instance.pointToLook - closestPosition).normalized;
     }
-
-    
 
 
     #endregion

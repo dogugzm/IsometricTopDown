@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerRollState : PlayerState
 {
@@ -12,18 +13,21 @@ public class PlayerRollState : PlayerState
     public override void Enter()
     {
         Roll();
+        player.effectController.DashEffectActivate();
         base.Enter();
+        
     }
 
     public override void Exit()
     {
         base.Exit();
+        player.effectController.NormalProfile();
     }
 
     public override void LogicalUpdate()
     {
         base.LogicalUpdate();
-        player.controller.Move(player.desiredMoveDirection * 7f * Time.deltaTime);
+        player.controller.Move(player.desiredMoveDirection * 15f * Time.deltaTime);
         if (isRollAnimationFinished)
         {
             if (player.Speed > 0.1f)
@@ -37,7 +41,7 @@ public class PlayerRollState : PlayerState
             
         }
 
-        //animasyon bittiðinde ýdle a dön
+        
     }
 
     private void Roll()
