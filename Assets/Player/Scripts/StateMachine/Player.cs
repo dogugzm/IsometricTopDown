@@ -25,6 +25,10 @@ public class Player : MonoBehaviour
     public PlayerMoveState MoveState { get; private set; }
     public PlayerRollState RollState { get; private set; }
     public PlayerMeleeState MeleeState { get; private set; }
+    public PlayerCombat2State Combat2State { get; private set; }
+    public PlayerCombat3State Combat3State { get; private set; }
+
+
     public PlayerShootState ShootState { get; private set; }
     public PlayerHitState HitState { get; private set; }
 
@@ -40,6 +44,7 @@ public class Player : MonoBehaviour
     public HealthBar healthBar;
     public EquipmentController equipmentController;
     public EffectController effectController;
+    public FieldOfView fieldOfViewScript;
 
 
     #endregion
@@ -64,16 +69,20 @@ public class Player : MonoBehaviour
     private Vector3 verticalVelocity;
 
     public ParticleSystem SwordParticle;
+
+    bool chainStarted;
     
 
     private void Awake()
-    {
-        
+    {   
+        chainStarted=false;
         StateMachine = new PlayerStateMachine();
         IdleState = new PlayerIdleState(this, StateMachine, playerData,"IDLE");
         MoveState = new PlayerMoveState(this, StateMachine, playerData,"MOVE");
         RollState = new PlayerRollState(this, StateMachine, playerData, "ROLL");
         MeleeState = new PlayerMeleeState(this, StateMachine, playerData, "MELEE");
+        Combat2State = new PlayerCombat2State(this, StateMachine, playerData, "COMBAT2");
+        Combat3State = new PlayerCombat3State(this, StateMachine, playerData, "COMBAT3");
         ShootState = new PlayerShootState(this, StateMachine, playerData, "SHOOT");
         HitState = new PlayerHitState(this, StateMachine, playerData, "HIT");
 
@@ -148,7 +157,18 @@ public class Player : MonoBehaviour
     private void MeleeAnimationFinishTrigger()
     {
         StateMachine.CurrentState.MeleeAnimationFinishTrigger();
+    }  
+    private void Combat2AnimationFinishTrigger()
+    {
+        StateMachine.CurrentState.Combat2AnimationFinishTrigger();
     }  //MARKER: Animation Event
+private void Combat3AnimationFinishTrigger()
+    {
+        StateMachine.CurrentState.Combat3AnimationFinishTrigger();
+    }  //MARKER: Animation Event
+
+    //MARKER: Animation Event
+
 
     public void ChangeRotationToCursor()
     {

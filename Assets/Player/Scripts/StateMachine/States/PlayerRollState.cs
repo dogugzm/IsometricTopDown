@@ -27,7 +27,7 @@ public class PlayerRollState : PlayerState
     public override void LogicalUpdate()
     {
         base.LogicalUpdate();
-        player.controller.Move(player.desiredMoveDirection * 15f * Time.deltaTime);
+        player.controller.Move(player.desiredMoveDirection.normalized * 30f * Time.deltaTime);
         if (isRollAnimationFinished)
         {
             if (player.Speed > 0.1f)

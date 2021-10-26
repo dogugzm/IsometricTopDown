@@ -37,6 +37,7 @@ public class PlayerMoveState : PlayerState
         if (Input.GetMouseButtonDown(0))
         {
             stateMachine.ChangeState(player.MeleeState);
+            //sadece melee statine değil diğer combat statelerine de girebilmeli
         }
         if (Input.GetMouseButtonDown(1))
         {

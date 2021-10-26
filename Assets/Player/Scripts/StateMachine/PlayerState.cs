@@ -11,6 +11,10 @@ public class PlayerState
     protected float startTime;
     protected bool isRollAnimationFinished;
     protected bool isMeleeAnimationFinished;
+    protected bool isCombat2AnimationFinished;
+
+    protected bool isCombat3AnimationFinished;
+
 
 
     public PlayerState(Player player,PlayerStateMachine stateMachine,PlayerData playerData,string stateName)
@@ -27,6 +31,9 @@ public class PlayerState
         startTime = Time.time;
         isRollAnimationFinished = false;
         isMeleeAnimationFinished = false;
+        isCombat2AnimationFinished = false;
+        isCombat3AnimationFinished = false;
+
 
         Debug.Log(stateName);
     }
@@ -47,6 +54,14 @@ public class PlayerState
     public virtual void MeleeAnimationFinishTrigger()
     {
         isMeleeAnimationFinished = true;
+    }
+    public virtual void Combat2AnimationFinishTrigger()
+    {
+        isCombat2AnimationFinished = true;
+    }
+    public virtual void Combat3AnimationFinishTrigger()
+    {
+        isCombat3AnimationFinished = true;
     }
 
 

@@ -13,11 +13,13 @@ public class PlayerMeleeState : PlayerState
 
     public override void Enter()
     {
+        base.Enter();
+        player.Anim.ResetTrigger("isAttacking");                 
         player.equipmentController.ChangeState(swordState);
         MeleeAttack();
-        base.Enter();
+        
         player.Sword.SetActive(true);
-        player.SwordParticle.Play();
+        player.SwordParticle.Play(); //TODO:4_SwordTrail
 
     }
 
@@ -32,8 +34,15 @@ public class PlayerMeleeState : PlayerState
 
     public override void LogicalUpdate()
     {
+
         base.LogicalUpdate();
-        player.controller.Move(player.desiredMoveDirection * 2f * Time.deltaTime);
+        player.controller.Move(player.desiredMoveDirection * 2f * Time.deltaTime); //TODO:3_PlayerMove
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            stateMachine.ChangeState(player.Combat2State);
+            return;
+        }
        
         if (isMeleeAnimationFinished)
         {
@@ -51,7 +60,7 @@ public class PlayerMeleeState : PlayerState
     private void MeleeAttack()
     {
        player.ChangeRotationToCursor();
-       CinemachineShake.instance.ShakeCamera(1f, 0.5f);
+       CinemachineShake.instance.ShakeCamera(1f, 0.5f); //TODO:6_ShakeCamera
        player.Anim.SetTrigger("isAttacking");                 
     }
 }

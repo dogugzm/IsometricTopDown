@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float distance;
     [SerializeField]private SkinnedMeshRenderer meshRenderer;
     [SerializeField] protected ParticleSystem hitParticle;
+    [SerializeField] private bool isVisibleOnStart=false;
 
     private float health;
     bool knockBack;
@@ -21,7 +22,7 @@ public class Enemy : MonoBehaviour
     protected Animator animator;
 
     private void Awake() {
-        this.gameObject.SetActive(false);
+        this.gameObject.SetActive(isVisibleOnStart);
         
     }
 
@@ -84,7 +85,7 @@ public class Enemy : MonoBehaviour
         agent.acceleration = 30;
         
         meshRenderer.material.SetColor("_EmissionColor", Color.white);
-        meshRenderer.material.EnableKeyword("_EMISSION");
+        meshRenderer.material.EnableKeyword("_EMISSION");                     
         yield return new WaitForSeconds(0.1f);
         meshRenderer.material.SetColor("_EmissionColor", Color.black);
         yield return new WaitForSeconds(0.2f);
@@ -122,8 +123,8 @@ public class Enemy : MonoBehaviour
     }
     public virtual void Hurt()
     {
-        StartCoroutine(KnockBack());
-        hitParticle.Play();
+        StartCoroutine(KnockBack());  //TODO:2_KnockBack
+        hitParticle.Play();  //TODO:5_Particle
         animator.SetTrigger("TisHit");
         health -= damage;
         

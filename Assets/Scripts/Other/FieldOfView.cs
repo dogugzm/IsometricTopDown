@@ -5,10 +5,28 @@ using UnityEngine;
 public class FieldOfView : MonoBehaviour
 {
     public GameObject hitPoint;
-    public float range;
-    [Range(0,360)]
-    public float angle;
+    [HideInInspector]public float range;  
+    
+    [HideInInspector]public float angle;
+
+    [SerializeField]private float rangeNormal;  //2.92
+    [Range(0,360)]         //109
+    [SerializeField]private float angleNormal;
+
+     [SerializeField]private float rangeCombat3;  
+    [Range(0,360)]         
+     [SerializeField]private float angleCombat3;
+
+
     [SerializeField] LayerMask enemyLayers;
+   
+
+    private void Start() {
+
+       range = rangeNormal;
+       angle = angleNormal;
+        
+    }
  
     public void AttackToEnemies() //MARKER: Animaton Event
     {
@@ -39,6 +57,20 @@ public class FieldOfView : MonoBehaviour
 
         }
     }
+
+    public void Combat3ValuesActivate()
+    {
+        range = rangeCombat3;
+        angle = angleCombat3;
+    }
+
+    public void GoDefaultValues()
+    {
+            range = rangeNormal;
+            angle = angleNormal;
+    }
+
+
 
 
    
