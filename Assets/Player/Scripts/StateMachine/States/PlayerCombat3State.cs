@@ -37,7 +37,7 @@ public class PlayerCombat3State : PlayerState
     {
 
         base.LogicalUpdate();
-        player.controller.Move(player.desiredMoveDirection * 2f * Time.deltaTime);
+        //player.controller.Move(2f * Time.deltaTime * player.desiredMoveDirection);
 
         // if (Input.GetMouseButtonDown(0))
         // {
@@ -47,6 +47,7 @@ public class PlayerCombat3State : PlayerState
        
         if (isCombat3AnimationFinished)
         {
+            Debug.Log("finished");
             if (player.Speed > 0.1f)
             {
                 stateMachine.ChangeState(player.MoveState);
@@ -62,6 +63,6 @@ public class PlayerCombat3State : PlayerState
     {
        player.ChangeRotationToCursor();
        CinemachineShake.instance.ShakeCamera(1.2f, 0.5f);
-       player.Anim.SetTrigger("isAttacking");                 
+       player.Anim.SetTrigger("isAttacking3");                 
     }
 }

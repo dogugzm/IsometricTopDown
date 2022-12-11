@@ -12,7 +12,6 @@ public class PlayerState
     protected bool isRollAnimationFinished;
     protected bool isMeleeAnimationFinished;
     protected bool isCombat2AnimationFinished;
-
     protected bool isCombat3AnimationFinished;
 
 
@@ -27,15 +26,14 @@ public class PlayerState
 
     public virtual void Enter()
     {
-        player.Anim.SetFloat("Blend", 0,0.01f,Time.deltaTime);   
+        player.Anim.SetFloat("Blend", 0,0.01f,Time.deltaTime);
+        player.currentStateText = stateName;
         startTime = Time.time;
         isRollAnimationFinished = false;
         isMeleeAnimationFinished = false;
         isCombat2AnimationFinished = false;
         isCombat3AnimationFinished = false;
-
-
-        Debug.Log(stateName);
+ 
     }
     public virtual void Exit()
     {

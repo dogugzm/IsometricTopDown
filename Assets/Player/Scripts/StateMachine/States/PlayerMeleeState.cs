@@ -9,6 +9,7 @@ public class PlayerMeleeState : PlayerState
 
     public PlayerMeleeState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
+
     }
 
     public override void Enter()
@@ -34,16 +35,23 @@ public class PlayerMeleeState : PlayerState
 
     public override void LogicalUpdate()
     {
-
+        //Debug.Log(player.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
         base.LogicalUpdate();
-        player.controller.Move(player.desiredMoveDirection * 2f * Time.deltaTime); //TODO:3_PlayerMove
+        //player.controller.Move(2f * Time.deltaTime * player.desiredMoveDirection); //TODO:3_PlayerMove
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isMeleeAnimationFinished)
         {
+            
             stateMachine.ChangeState(player.Combat2State);
             return;
+            
         }
-       
+
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    stateMachine.ChangeState(player.RollState);
+        //}
+
         if (isMeleeAnimationFinished)
         {
             if (player.Speed > 0.1f)
@@ -62,5 +70,11 @@ public class PlayerMeleeState : PlayerState
        player.ChangeRotationToCursor();
        CinemachineShake.instance.ShakeCamera(1f, 0.5f); //TODO:6_ShakeCamera
        player.Anim.SetTrigger("isAttacking");                 
+    }
+
+
+    IEnumerator AfterAnim()
+    {
+        yield return new WaitForSeconds(1);
     }
 }

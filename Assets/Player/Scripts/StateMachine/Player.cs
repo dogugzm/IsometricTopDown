@@ -48,6 +48,8 @@ public class Player : MonoBehaviour
 
 
     #endregion
+
+
     [HideInInspector] public float InputX;
     [HideInInspector] public float InputZ;
     [HideInInspector] public float Speed;
@@ -71,6 +73,8 @@ public class Player : MonoBehaviour
     public ParticleSystem SwordParticle;
 
     bool chainStarted;
+
+    public string currentStateText;
     
 
     private void Awake()
@@ -134,6 +138,11 @@ public class Player : MonoBehaviour
     }
     private void RotationJob()
     {
+        if (desiredMoveDirection== Vector3.zero)
+        {
+            return;
+
+        }
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
     }
     private void FindMeshPosition()
@@ -179,5 +188,12 @@ private void Combat3AnimationFinishTrigger()
     #endregion
 
 
+    private void OnGUI()
+    {
+        GUIStyle headStyle = new GUIStyle();
+        headStyle.fontSize = 50;
+        GUI.color = Color.blue;
+        GUI.Label(new Rect(10, 10, 300, 50), currentStateText, headStyle);
+    }
 
 }
