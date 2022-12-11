@@ -37,7 +37,7 @@ public class PlayerMeleeState : PlayerState
     {
         //Debug.Log(player.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
         base.LogicalUpdate();
-        //player.controller.Move(2f * Time.deltaTime * player.desiredMoveDirection); //TODO:3_PlayerMove
+        player.controller.Move(2f * Time.deltaTime * player.desiredMoveDirection); //TODO:3_PlayerMove
 
         if (Input.GetMouseButtonDown(0) && !isMeleeAnimationFinished)
         {
