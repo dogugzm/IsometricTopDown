@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerShootState : PlayerState
 {
     public float chargeTimer = 0f;
-    public float chargeTimerMax = 2f;
+    public float chargeTimerMax = 1f;
     bool readyToShoot;
     EquipmentController.Equipment shootState =  EquipmentController.Equipment.Shoot;
     EquipmentController.Equipment swordState =  EquipmentController.Equipment.Sword;

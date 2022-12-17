@@ -91,7 +91,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _GrassCut: 0
+    - _GrassCut: 0.108
     - _GrassSaturation: 2
     - _GrassShading: 0.106
     - _GrassThinness: 0.355
@@ -127,8 +127,8 @@ Material:
     - _UseVP: 1
     - _UseVR: 0
     - _UseWC: 0
-    - _WindForce: 0.25
-    - _WindMovement: 0.55
+    - _WindForce: 0.15
+    - _WindMovement: 0.09
     - _WorldRotation: 0
     - _WorldScale: 10
     - _ZWrite: 1

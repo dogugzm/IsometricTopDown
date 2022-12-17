@@ -37,9 +37,9 @@ public class PlayerMeleeState : PlayerState
     {
         //Debug.Log(player.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
         base.LogicalUpdate();
-        player.controller.Move(2f * Time.deltaTime * player.desiredMoveDirection); //TODO:3_PlayerMove
+        player.controller.Move(1.2f * Time.deltaTime * player.desiredMoveDirection); //TODO:3_PlayerMove
 
-        if (Input.GetMouseButtonDown(0) && !isMeleeAnimationFinished)
+        if (Input.GetMouseButtonDown(0))
         {
             
             stateMachine.ChangeState(player.Combat2State);
@@ -68,7 +68,7 @@ public class PlayerMeleeState : PlayerState
     private void MeleeAttack()
     {
        player.ChangeRotationToCursor();
-       CinemachineShake.instance.ShakeCamera(1f, 0.5f); //TODO:6_ShakeCamera
+       //CinemachineShake.instance.ShakeCamera(1f, 0.5f); //TODO:6_ShakeCamera
        player.Anim.SetTrigger("isAttacking");                 
     }
 

@@ -58,6 +58,12 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Move()
     {
+        if (knockBack)
+        {
+            return;
+        }
+      
+
         if (Vector3.Distance(transform.position, Target.position) < 0.2f)
         {
             agent.ResetPath();
@@ -118,20 +124,24 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
+        
+        agent.ResetPath();
+
+        
         animator.SetTrigger("TisDeath");
         Destroy(gameObject,1f);
     }
     public virtual void Hurt()
     {
-        StartCoroutine(KnockBack());  //TODO:2_KnockBack
-        hitParticle.Play();  //TODO:5_Particle
+        StartCoroutine(KnockBack());  
+        hitParticle.Play();  
         animator.SetTrigger("TisHit");
         health -= damage;
         
     }
     public virtual void Spawn()
     {
-        //spawn instantiate effect
+        
         Debug.Log("Activated");
         this.gameObject.SetActive(true);
     }

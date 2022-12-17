@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,16 +20,16 @@ public class MagicBall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        transform.DORotate(new Vector3(0, 90, 0), 0.1f).SetLoops(-1);
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-
         transform.Translate(Player.mouseClickedDir * magicBallSpeed * Time.deltaTime);
+        //transform.DOMove(Player.mouseClickedDir * magicBallSpeed, 2f);
+        //Vector3.MoveTowards(transform.position, Player.mouseClickedDir , magicBallSpeed * Time.deltaTime);
        // transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(PlayerAttack.mouseClickedDir), 0.1f);
 
 

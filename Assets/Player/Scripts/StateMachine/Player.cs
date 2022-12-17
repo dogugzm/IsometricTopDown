@@ -113,6 +113,11 @@ public class Player : MonoBehaviour
         
     }
 
+    public void CameraShake(float effectSize)
+    {
+        CinemachineShake.instance.ShakeCamera(effectSize, 0.2f); 
+    }
+
     #region IN HERE METHODS
 
     void InputMagnitude()

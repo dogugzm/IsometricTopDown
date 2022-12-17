@@ -37,14 +37,14 @@ public class PlayerCombat3State : PlayerState
     {
 
         base.LogicalUpdate();
-        //player.controller.Move(2f * Time.deltaTime * player.desiredMoveDirection);
+        player.controller.Move(1.3f * Time.deltaTime * player.desiredMoveDirection);
 
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     stateMachine.ChangeState(player.Combat2State);
-            
-        // }
-       
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    stateMachine.ChangeState(player.MeleeState);
+
+        //}
+
         if (isCombat3AnimationFinished)
         {
             Debug.Log("finished");
@@ -62,7 +62,7 @@ public class PlayerCombat3State : PlayerState
     private void MeleeAttack()
     {
        player.ChangeRotationToCursor();
-       CinemachineShake.instance.ShakeCamera(1.2f, 0.5f);
+       //CinemachineShake.instance.ShakeCamera(3f, 0.5f);
        player.Anim.SetTrigger("isAttacking3");                 
     }
 }
