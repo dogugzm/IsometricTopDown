@@ -53,6 +53,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public float InputX;
     [HideInInspector] public float InputZ;
     [HideInInspector] public float Speed;
+    [HideInInspector] public bool CanDash = true;
+
     [HideInInspector] public Vector3 desiredMoveDirection {get;  set;}
 
     [HideInInspector] public static Vector3 closestPosition;
@@ -60,10 +62,12 @@ public class Player : MonoBehaviour
     [HideInInspector] public static Vector3 mouseClickedDir;
     public GameObject MagicBall;
     public GameObject Sword;
+    public Transform PorjectilePosition;
 
     public float health;
     public float maxHealth = 100;
     public float damageTaken;
+
     [Header("MOVEMENT")]
     public float Velocity;
     public float desiredRotationSpeed = 10f;
@@ -74,7 +78,10 @@ public class Player : MonoBehaviour
 
     bool chainStarted;
 
+
     public string currentStateText;
+
+
     
 
     private void Awake()
@@ -126,8 +133,12 @@ public class Player : MonoBehaviour
         InputX = Input.GetAxis("Horizontal");
         InputZ = Input.GetAxis("Vertical");
 
-        //Calculate the Input Magnitude
-        Speed = new Vector2(InputX, InputZ).sqrMagnitude;
+        //Calculate the Input Magnitude for animation blend.
+        Speed = new Vector2(InputX, InputZ).normalized.sqrMagnitude;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Speed *= 2;
+        }
         
         
 
@@ -163,7 +174,7 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    #region OTHER SCRIPT METHODS
+    #region Animation Triggers
     private void RollAnimationFinishTrigger()
     {
         StateMachine.CurrentState.RollAnimationFinishTrigger();

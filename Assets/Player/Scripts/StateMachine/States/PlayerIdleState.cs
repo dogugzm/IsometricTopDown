@@ -13,6 +13,8 @@ public class PlayerIdleState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.controller.Move(Vector3.zero);
+
     }
 
     public override void Exit()

@@ -1,27 +1,29 @@
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
+
 
 public class PlayerRollState : PlayerState
 {
-    
+
     public PlayerRollState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
+
     }
 
     public override void Enter()
     {
+
         Roll();
         player.effectController.DashEffectActivate();
         base.Enter();
-        
     }
 
     public override void Exit()
     {
         base.Exit();
         player.effectController.NormalProfile();
+        player.StartCoroutine(DashCooldown());
     }
 
     public override void LogicalUpdate()
@@ -30,25 +32,20 @@ public class PlayerRollState : PlayerState
         player.controller.Move(player.desiredMoveDirection.normalized * 30f * Time.deltaTime);
         if (isRollAnimationFinished)
         {
-            if (player.Speed > 0.1f)
-            {
-                stateMachine.ChangeState(player.MoveState);
-            }
-            else if (player.Speed < 0.1f)
-            {
-                stateMachine.ChangeState(player.IdleState);
-            }
-            
+            stateMachine.ChangeState(player.IdleState);
         }
-
-        
     }
 
     private void Roll()
     {
-        player.Anim.SetTrigger("isRolling");
+        player.Anim.SetTrigger("isRolling");       
     }
 
-    
+    IEnumerator DashCooldown()
+    {
+        player.CanDash = false;
+        yield return new WaitForSeconds(0.5f);
+        player.CanDash = true;
+    }
 
 }

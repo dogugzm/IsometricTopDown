@@ -16,6 +16,7 @@ public class Cursor : MonoBehaviour
 
     private void Update()
     {
+        
         Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane groundPlane = new Plane(Vector3.up, new Vector3(0, Player.closestPosition.y, 0));
         float rayLength;

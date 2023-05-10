@@ -30,7 +30,7 @@ public class PlayerMoveState : PlayerState
         {
             stateMachine.ChangeState(player.IdleState);
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && player.CanDash)
         {
             stateMachine.ChangeState(player.RollState);
         }
@@ -60,7 +60,16 @@ public class PlayerMoveState : PlayerState
         forward.Normalize();
         right.Normalize();
 
-        player.desiredMoveDirection = forward * player.InputZ + right * player.InputX;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            player.desiredMoveDirection = (forward * player.InputZ + right * player.InputX).normalized * 5f;
+        }
+        else
+        {
+            player.desiredMoveDirection = (forward * player.InputZ + right * player.InputX).normalized;
+
+        }
+
         player.controller.Move(player.desiredMoveDirection * Time.deltaTime * player.Velocity);
 
     }

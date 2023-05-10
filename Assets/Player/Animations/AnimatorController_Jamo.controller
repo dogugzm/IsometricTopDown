@@ -45,7 +45,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 6fd7082454b5e8f4eaef795e9a384dfa, type: 2}
-    m_Threshold: 0.25
+    m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -53,7 +53,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 2e5cbd52f3af8384fafcc9a73ad2f1e0, type: 2}
-    m_Threshold: 0.6
+    m_Threshold: 2
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -62,7 +62,7 @@ BlendTree:
   m_BlendParameter: Blend
   m_BlendParameterY: Blend
   m_MinThreshold: 0
-  m_MaxThreshold: 0.6
+  m_MaxThreshold: 2
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 0
@@ -594,29 +594,29 @@ AnimatorStateMachine:
     m_Position: {x: -210, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2970373534453610635}
-    m_Position: {x: -310, y: -260, z: 0}
+    m_Position: {x: -240, y: -150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5225073979210126319}
-    m_Position: {x: 180, y: -230, z: 0}
+    m_Position: {x: 100, y: -250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 565674265872237546}
-    m_Position: {x: 250, y: 160, z: 0}
+    m_Position: {x: 90, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1467502061566390494}
-    m_Position: {x: -530, y: -120, z: 0}
+    m_Position: {x: -550, y: -150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3828447539537342200}
-    m_Position: {x: 180, y: -120, z: 0}
+    m_Position: {x: 100, y: -140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8541709323382882276}
-    m_Position: {x: 180, y: -30, z: 0}
+    m_Position: {x: 100, y: -50, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -2104617880497318195}
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 600, y: 0, z: 0}
+  m_AnyStatePosition: {x: 440, y: 80, z: 0}
   m_EntryPosition: {x: -160, y: 200, z: 0}
   m_ExitPosition: {x: -530, y: 30, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
