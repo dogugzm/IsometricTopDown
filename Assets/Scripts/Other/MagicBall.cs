@@ -28,7 +28,7 @@ public class MagicBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //move forward and rotate at the same time.
         transform.position += magicBallSpeed * Time.deltaTime * Target;
         transform.GetChild(0).Rotate(new Vector3(0, -magicBallRotSpeed, 0));    
 
