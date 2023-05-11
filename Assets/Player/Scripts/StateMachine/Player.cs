@@ -27,6 +27,9 @@ public class Player : MonoBehaviour
     public PlayerMeleeState MeleeState { get; private set; }
     public PlayerCombat2State Combat2State { get; private set; }
     public PlayerCombat3State Combat3State { get; private set; }
+    public PlayerDashCombatState DashCombatState { get; private set; }
+
+
 
 
     public PlayerShootState ShootState { get; private set; }
@@ -96,6 +99,7 @@ public class Player : MonoBehaviour
         Combat3State = new PlayerCombat3State(this, StateMachine, playerData, "COMBAT3");
         ShootState = new PlayerShootState(this, StateMachine, playerData, "SHOOT");
         HitState = new PlayerHitState(this, StateMachine, playerData, "HIT");
+        DashCombatState = new PlayerDashCombatState(this, StateMachine, playerData, "DashAttack");
 
     }
     private void Start()

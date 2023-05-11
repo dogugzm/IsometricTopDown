@@ -34,6 +34,10 @@ public class PlayerRollState : PlayerState
         {
             stateMachine.ChangeState(player.IdleState);
         }
+        if (Input.GetMouseButtonDown(0))
+        {
+            stateMachine.ChangeState(player.MeleeState);
+        }
     }
 
     private void Roll()
