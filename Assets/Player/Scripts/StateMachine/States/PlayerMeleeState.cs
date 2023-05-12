@@ -47,11 +47,6 @@ public class PlayerMeleeState : PlayerState
             
         }
 
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    stateMachine.ChangeState(player.RollState);
-        //}
-
         if (isMeleeAnimationFinished)
         {
             if (player.Speed > 0.1f)

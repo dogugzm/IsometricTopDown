@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerRollState : PlayerState
 {
 
+    bool dashCombatActivated;
+
     public PlayerRollState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
 
@@ -17,27 +19,42 @@ public class PlayerRollState : PlayerState
         Roll();
         player.effectController.DashEffectActivate();
         base.Enter();
+        dashCombatActivated = false;
     }
 
     public override void Exit()
     {
         base.Exit();
-        player.effectController.NormalProfile();
         player.StartCoroutine(DashCooldown());
+        if (dashCombatActivated)
+        {
+            return;
+        }
+        player.effectController.NormalProfile();
     }
 
     public override void LogicalUpdate()
     {
         base.LogicalUpdate();
-        player.controller.Move(player.desiredMoveDirection.normalized * 30f * Time.deltaTime);
-        if (isRollAnimationFinished)
-        {
-            stateMachine.ChangeState(player.IdleState);
-        }
+        player.controller.Move(player.desiredMoveDirection.normalized * 20f * Time.deltaTime);
         if (Input.GetMouseButtonDown(0))
         {
-            stateMachine.ChangeState(player.MeleeState);
+            dashCombatActivated = true;
         }
+        if (isRollAnimationFinished)
+        {
+            if (dashCombatActivated)
+            {
+                stateMachine.ChangeState(player.DashCombatState);
+
+
+            }
+            else
+            {
+                stateMachine.ChangeState(player.IdleState);
+            }
+        }
+       
     }
 
     private void Roll()

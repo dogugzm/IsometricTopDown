@@ -52,6 +52,8 @@ public class Player : MonoBehaviour
 
     #endregion
 
+    public LayerMask layerMask;
+
 
     [HideInInspector] public float InputX;
     [HideInInspector] public float InputZ;
@@ -59,10 +61,11 @@ public class Player : MonoBehaviour
     [HideInInspector] public bool CanDash = true;
 
     [HideInInspector] public Vector3 desiredMoveDirection {get;  set;}
+    [HideInInspector] public Vector3 AttackInputDirection { get; set; }
+    public Enemy currentEnemy;
 
     [HideInInspector] public static Vector3 closestPosition;
 
-    [HideInInspector] public static Vector3 mouseClickedDir;
     public GameObject MagicBall;
     public GameObject Sword;
     public Transform PorjectilePosition;
@@ -84,8 +87,19 @@ public class Player : MonoBehaviour
 
     public string currentStateText;
 
-
-    
+    /// <summary>
+    /// Player's sword will activate or deactivate with in given seconds.
+    /// </summary>
+    /// <param name="delay">in seconds</param>
+    /// <param name="willOpen">activate(T) or deactivate(F)</param>
+    /// <returns></returns>
+    public IEnumerator ActivateSwordWithDelay(float delay, bool willOpen)
+    {
+        SwordParticle.Stop();
+        yield return new WaitForSeconds(delay);
+        Sword.SetActive(willOpen);
+        SwordParticle.Play();
+    }
 
     private void Awake()
     {   
@@ -99,7 +113,7 @@ public class Player : MonoBehaviour
         Combat3State = new PlayerCombat3State(this, StateMachine, playerData, "COMBAT3");
         ShootState = new PlayerShootState(this, StateMachine, playerData, "SHOOT");
         HitState = new PlayerHitState(this, StateMachine, playerData, "HIT");
-        DashCombatState = new PlayerDashCombatState(this, StateMachine, playerData, "DashAttack");
+        DashCombatState = new PlayerDashCombatState(this, StateMachine, playerData, "DASH_ATTACK");
 
     }
     private void Start()
@@ -116,11 +130,20 @@ public class Player : MonoBehaviour
     private void Update()
     {
         
+        StateMachine.CurrentState.LogicalUpdate();
         InputMagnitude();
         VerticalMovement();
         RotationJob();
         FindMeshPosition();
-        StateMachine.CurrentState.LogicalUpdate();
+        ChangeAttackInputDirection();
+
+        RaycastHit info;
+
+        if (Physics.SphereCast(transform.position,0.5f,AttackInputDirection,out info,10,layerMask))
+        {
+            currentEnemy = info.collider.gameObject.GetComponent<Enemy>();
+        }
+
         
     }
 
@@ -144,8 +167,6 @@ public class Player : MonoBehaviour
             Speed *= 2;
         }
         
-        
-
     }
     private void VerticalMovement()
     {
@@ -156,6 +177,7 @@ public class Player : MonoBehaviour
         verticalVelocity.y += -9.81f * Time.deltaTime;
         controller.Move(verticalVelocity * Time.deltaTime);
     }
+
     private void RotationJob()
     {
         if (desiredMoveDirection== Vector3.zero)
@@ -165,13 +187,17 @@ public class Player : MonoBehaviour
         }
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
     }
+
     private void FindMeshPosition()
     {
         NavMeshHit hit;
+
         if (NavMesh.SamplePosition(transform.position, out hit, 1.0f, NavMesh.AllAreas))
         {
             closestPosition = hit.position;
         }
+
+
     }
 
 
@@ -182,7 +208,7 @@ public class Player : MonoBehaviour
     private void RollAnimationFinishTrigger()
     {
         StateMachine.CurrentState.RollAnimationFinishTrigger();
-    }  //MARKER: Animation Event
+    }  
     private void MeleeAnimationFinishTrigger()
     {
         StateMachine.CurrentState.MeleeAnimationFinishTrigger();
@@ -190,23 +216,30 @@ public class Player : MonoBehaviour
     private void Combat2AnimationFinishTrigger()
     {
         StateMachine.CurrentState.Combat2AnimationFinishTrigger();
-    }  //MARKER: Animation Event
-private void Combat3AnimationFinishTrigger()
+    }  
+    private void Combat3AnimationFinishTrigger()
     {
         StateMachine.CurrentState.Combat3AnimationFinishTrigger();
-    }  //MARKER: Animation Event
+    }
+    private void DashAttackAnimationFinishTrigger()
+    {
+        StateMachine.CurrentState.DashAttackAnimationFinishTrigger();
+    }
 
-    //MARKER: Animation Event
 
+
+
+    #endregion
 
     public void ChangeRotationToCursor()
     {
         desiredMoveDirection = (Cursor.instance.pointToLook - closestPosition).normalized;
     }
 
-
-    #endregion
-
+    public void ChangeAttackInputDirection()
+    {
+        AttackInputDirection = (Cursor.instance.pointToLook - closestPosition).normalized;
+    }
 
     private void OnGUI()
     {
@@ -214,6 +247,15 @@ private void Combat3AnimationFinishTrigger()
         headStyle.fontSize = 50;
         GUI.color = Color.blue;
         GUI.Label(new Rect(10, 10, 300, 50), currentStateText, headStyle);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        Gizmos.DrawRay(transform.position, AttackInputDirection);
+        //Gizmos.DrawWireSphere(transform.position, 1);
+        if (currentEnemy != null)
+            Gizmos.DrawSphere(currentEnemy.transform.position, 1f);
     }
 
 }

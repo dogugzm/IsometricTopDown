@@ -24,8 +24,7 @@ public class FieldOfView : MonoBehaviour
     private void Start() {
 
        range = rangeNormal;
-       angle = angleNormal;
-        
+       angle = angleNormal;      
     }
  
     public void AttackToEnemies() //MARKER: Animaton Event
@@ -47,11 +46,7 @@ public class FieldOfView : MonoBehaviour
                 else if (enemyCollider.gameObject.layer==9)
                 {
                     enemyCollider.GetComponent<Projectile>().GoBack();    
-                }
-                 
-                
-               
-                
+                }                                                     
                           
             }
 

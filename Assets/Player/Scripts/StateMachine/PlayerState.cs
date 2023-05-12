@@ -13,6 +13,7 @@ public class PlayerState
     protected bool isMeleeAnimationFinished;
     protected bool isCombat2AnimationFinished;
     protected bool isCombat3AnimationFinished;
+    protected bool isDashAttackAnimationFinished;
 
 
 
@@ -33,7 +34,9 @@ public class PlayerState
         isMeleeAnimationFinished = false;
         isCombat2AnimationFinished = false;
         isCombat3AnimationFinished = false;
- 
+        isDashAttackAnimationFinished = false;
+
+
     }
     public virtual void Exit()
     {
@@ -60,6 +63,10 @@ public class PlayerState
     public virtual void Combat3AnimationFinishTrigger()
     {
         isCombat3AnimationFinished = true;
+    }
+    public virtual void DashAttackAnimationFinishTrigger()
+    {
+        isDashAttackAnimationFinished = true;
     }
 
 

@@ -118,6 +118,7 @@ public class Enemy : MonoBehaviour
     {
         
     }
+
     protected virtual void Death()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
