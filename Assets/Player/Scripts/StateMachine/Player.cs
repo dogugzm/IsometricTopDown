@@ -28,10 +28,7 @@ public class Player : MonoBehaviour
     public PlayerCombat2State Combat2State { get; private set; }
     public PlayerCombat3State Combat3State { get; private set; }
     public PlayerDashCombatState DashCombatState { get; private set; }
-
-
-
-
+    public PlayerHeavyAttackState HeavyAttackState { get; private set; }
     public PlayerShootState ShootState { get; private set; }
     public PlayerHitState HitState { get; private set; }
 
@@ -62,6 +59,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public Vector3 desiredMoveDirection {get;  set;}
     [HideInInspector] public Vector3 AttackInputDirection { get; set; }
+
     public Enemy currentEnemy;
 
     [HideInInspector] public static Vector3 closestPosition;
@@ -69,6 +67,10 @@ public class Player : MonoBehaviour
     public GameObject MagicBall;
     public GameObject Sword;
     public Transform PorjectilePosition;
+    public GameObject CinematicCamera;
+    public Transform CinematicCameraFocusObject;
+
+
 
     public float health;
     public float maxHealth = 100;
@@ -114,6 +116,8 @@ public class Player : MonoBehaviour
         ShootState = new PlayerShootState(this, StateMachine, playerData, "SHOOT");
         HitState = new PlayerHitState(this, StateMachine, playerData, "HIT");
         DashCombatState = new PlayerDashCombatState(this, StateMachine, playerData, "DASH_ATTACK");
+        HeavyAttackState = new PlayerHeavyAttackState(this, StateMachine, playerData, "HEAVY_ATTACK");
+
 
     }
     private void Start()
@@ -129,22 +133,32 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        
+
         StateMachine.CurrentState.LogicalUpdate();
         InputMagnitude();
         VerticalMovement();
         RotationJob();
         FindMeshPosition();
         ChangeAttackInputDirection();
+        SetCurrentEnemy();
 
+    }
+
+    private void SetCurrentEnemy()
+    {
+        
         RaycastHit info;
-
-        if (Physics.SphereCast(transform.position,0.5f,AttackInputDirection,out info,10,layerMask))
+        if (Physics.SphereCast(transform.position, 0.5f, AttackInputDirection, out info, 5, layerMask))
         {
             currentEnemy = info.collider.gameObject.GetComponent<Enemy>();
         }
+    }
 
-        
+    public Vector3 TargetOffset(Transform target)
+    {
+        Vector3 position;
+        position = target.position;
+        return Vector3.MoveTowards(position, closestPosition, .5f);
     }
 
     public void CameraShake(float effectSize)
@@ -188,7 +202,7 @@ public class Player : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
     }
 
-    private void FindMeshPosition()
+    private void FindMeshPosition() //update den çýkar gerektiðinde çaðýr.
     {
         NavMeshHit hit;
 
@@ -225,6 +239,11 @@ public class Player : MonoBehaviour
     {
         StateMachine.CurrentState.DashAttackAnimationFinishTrigger();
     }
+    private void HeavyAttackAnimationFinishTrigger() 
+    {
+        StateMachine.CurrentState.HeavyAttackAnimationFinisTrigger();
+        
+    }        
 
 
 

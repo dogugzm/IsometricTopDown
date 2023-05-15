@@ -1,9 +1,11 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombat3State : PlayerState
 {
+    Transform target;
 
     EquipmentController.Equipment swordState =  EquipmentController.Equipment.Sword;
 
@@ -17,9 +19,20 @@ public class PlayerCombat3State : PlayerState
         player.fieldOfViewScript.Combat3ValuesActivate();  
         player.Anim.ResetTrigger("isAttacking");                 
         player.equipmentController.ChangeState(swordState);
-        MeleeAttack();
+        player.Anim.SetTrigger("isAttacking3");
+  
         player.Sword.SetActive(true);
         player.SwordParticle.Play();
+
+        if (player.currentEnemy != null)
+        {
+            if (player.currentEnemy.IsLastHit())
+            {
+                player.StartCoroutine(FinalCutDeath());
+            }
+        }
+        target = player.currentEnemy.transform;
+
 
     }
 
@@ -30,6 +43,7 @@ public class PlayerCombat3State : PlayerState
         player.SwordParticle.Stop();
         player.Sword.SetActive(false);
         player.fieldOfViewScript.GoDefaultValues();
+        DOTween.KillAll();
 
     }
 
@@ -37,17 +51,15 @@ public class PlayerCombat3State : PlayerState
     {
 
         base.LogicalUpdate();
-        player.controller.Move(1.3f * Time.deltaTime * player.desiredMoveDirection);
-
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    stateMachine.ChangeState(player.MeleeState);
-
-        //}
+        if (target != null)
+        {
+            player.transform.DOLookAt(target.position, 0.2f);
+            player.transform.DOMove(player.TargetOffset(target), 1f);
+        }
 
         if (isCombat3AnimationFinished)
         {
-            Debug.Log("finished");
+            
             if (player.Speed > 0.1f)
             {
                 stateMachine.ChangeState(player.MoveState);
@@ -59,10 +71,14 @@ public class PlayerCombat3State : PlayerState
         }
     }
 
-    private void MeleeAttack()
+    IEnumerator FinalCutDeath()
     {
-       player.ChangeRotationToCursor();
-       //CinemachineShake.instance.ShakeCamera(3f, 0.5f);
-       player.Anim.SetTrigger("isAttacking3");                 
+        Time.timeScale = 0.5f;
+        player.CinematicCamera.SetActive(true);
+        player.CinematicCameraFocusObject.position = player.currentEnemy.transform.position;
+        yield return new WaitForSecondsRealtime(2f);
+        player.CinematicCamera.SetActive(false);
+        Time.timeScale = 1f;
+
     }
 }

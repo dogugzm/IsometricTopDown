@@ -6,7 +6,7 @@ public class RunnerEnemy : Enemy
 {
     protected override void Move()
     {
-        base.Move();
+       // base.Move();
     }
 
     public override void Hurt()

@@ -140,6 +140,17 @@ public class Enemy : MonoBehaviour
         health -= damage;
         
     }
+
+    public bool IsLastHit()
+    {
+        if (health<=damage)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public virtual void Spawn()
     {
         

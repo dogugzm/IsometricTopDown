@@ -12,6 +12,8 @@ public class PlayerMoveState : PlayerState
     {
         player.Anim.SetFloat("Blend", 0);
         base.Enter();
+        player.controller.Move(Vector3.zero);
+        player.desiredMoveDirection = Vector3.zero;
     }
 
     public override void Exit()
@@ -37,11 +39,16 @@ public class PlayerMoveState : PlayerState
         if (Input.GetMouseButtonDown(0))
         {
             stateMachine.ChangeState(player.MeleeState);
-            //sadece melee statine değil diğer combat statelerine de girebilmeli
+            
         }
         if (Input.GetMouseButtonDown(1))
         {
             stateMachine.ChangeState(player.ShootState);
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse2))
+        {
+            stateMachine.ChangeState(player.HeavyAttackState);
+
         }
     }
 

@@ -1,11 +1,14 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombat2State : PlayerState
 {
+    Transform target;
 
     EquipmentController.Equipment swordState =  EquipmentController.Equipment.Sword;
+    bool isCombotContinue;
 
     public PlayerCombat2State(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
@@ -14,12 +17,22 @@ public class PlayerCombat2State : PlayerState
     public override void Enter()
     {
         base.Enter();
-
-        //player.Anim.ResetTrigger("isAttacking");                 
+        isCombotContinue = false;
+        //player.Anim.ResetTrigger("isAttacking2");                 
         player.equipmentController.ChangeState(swordState);
-        MeleeAttack();
+        player.Anim.SetTrigger("isAttacking2");                 
         player.Sword.SetActive(true);
         player.SwordParticle.Play();
+        if (player.currentEnemy != null)
+        {
+            if (player.currentEnemy.IsLastHit())
+            {
+                player.StartCoroutine(FinalCutDeath());
+            }
+        }
+        target = player.currentEnemy.transform;
+
+
 
     }
 
@@ -29,41 +42,55 @@ public class PlayerCombat2State : PlayerState
         player.Speed = 0;
         player.SwordParticle.Stop();
         player.Sword.SetActive(false);
-
+        
     }
 
     public override void LogicalUpdate()
     {
-        
+            
         base.LogicalUpdate();
-        player.controller.Move(1.2f * Time.deltaTime * player.desiredMoveDirection);
-
-       // Debug.Log(player.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-         if (Input.GetMouseButtonDown(0))
+        if (target != null)
         {
-            stateMachine.ChangeState(player.Combat3State);
-            return;
+            player.transform.DOLookAt(target.position, 0.2f);
+            player.transform.DOMove(player.TargetOffset(target), 1f);
         }
 
+       
+        if (Input.GetMouseButtonDown(0))
+        {
+            isCombotContinue = true;                 
+        }
         
-
         if (isCombat2AnimationFinished)
         {
-            if (player.Speed > 0.1f)
+            
+            if (isCombotContinue)
             {
-                stateMachine.ChangeState(player.MoveState);
+                stateMachine.ChangeState(player.Combat3State);
+                return;
             }
-            else if (player.Speed < 0.1f)
+            else
             {
-                stateMachine.ChangeState(player.IdleState);
+                if (player.Speed > 0.1f)
+                {
+                    stateMachine.ChangeState(player.MoveState);
+                }
+                else if (player.Speed < 0.1f)
+                {
+                    stateMachine.ChangeState(player.IdleState);
+                }
+
             }
         }
     }
 
-    private void MeleeAttack()
+    IEnumerator FinalCutDeath()
     {
-       player.ChangeRotationToCursor();
-       //CinemachineShake.instance.ShakeCamera(1.1f, 0.5f);
-       player.Anim.SetTrigger("isAttacking2");                 
+        Time.timeScale = 0.5f;
+        player.CinematicCamera.SetActive(true);
+        player.CinematicCameraFocusObject.position = player.currentEnemy.transform.position;
+        yield return new WaitForSecondsRealtime(2f);
+        player.CinematicCamera.SetActive(false);
+        Time.timeScale = 1f;
     }
 }

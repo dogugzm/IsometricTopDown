@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerIdleState : PlayerState
 {
     
-
     public PlayerIdleState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
+
     }
 
     public override void Enter()
@@ -38,6 +38,11 @@ public class PlayerIdleState : PlayerState
         if (Input.GetMouseButtonDown(1))
         {
             stateMachine.ChangeState(player.ShootState);
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse2))
+        {
+            stateMachine.ChangeState(player.HeavyAttackState);
+
         }
 
     }
