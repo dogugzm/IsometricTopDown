@@ -13,9 +13,9 @@ public class FieldOfView : MonoBehaviour
     [Range(0,360)]         //109
     [SerializeField]private float angleNormal;
 
-     [SerializeField]private float rangeCombat3;  
+    [SerializeField]private float rangeCombat3;  
     [Range(0,360)]         
-     [SerializeField]private float angleCombat3;
+    [SerializeField]private float angleCombat3;
 
 
     [SerializeField] LayerMask enemyLayers;
@@ -24,7 +24,8 @@ public class FieldOfView : MonoBehaviour
     private void Start() {
 
        range = rangeNormal;
-       angle = angleNormal;      
+       angle = angleNormal;   
+        
     }
  
     public void AttackToEnemies() //MARKER: Animaton Event
@@ -40,8 +41,11 @@ public class FieldOfView : MonoBehaviour
             {
                 if (enemyCollider.gameObject.layer==7) //enemy layer 
                 {
+
+                    //enemyCollider.GetComponent<Entity>().stateMachine.ChangeState(enemyCollider.GetComponent<Entity>().);
                     
-                     enemyCollider.GetComponent<Enemy>().Hurt();  //damagable interface dene!
+                    //enemyScript.stateMachine.ChangeState(enemyScript.idleState);
+
                 }
                 else if (enemyCollider.gameObject.layer==9)
                 {

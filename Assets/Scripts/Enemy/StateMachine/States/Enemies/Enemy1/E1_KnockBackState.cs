@@ -16,7 +16,7 @@ public class E1_KnockBackState : KnockBackState
     {
         base.Enter();
         
-        enemy.anim.SetBool("isHit", true);
+        enemy.Anim.SetBool("isHit", true);
         enemy.PlayHitParticle();
      
         enemy.DecreaseHealth(enemy.damageTaken);
@@ -28,7 +28,7 @@ public class E1_KnockBackState : KnockBackState
     {
         base.Exit();
         enemy.goToHurtState = false;
-        enemy.anim.SetBool("isHit", false);
+        enemy.Anim.SetBool("isHit", false);
 
 
     }

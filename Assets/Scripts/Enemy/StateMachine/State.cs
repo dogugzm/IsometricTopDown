@@ -20,10 +20,8 @@ public class State
     public virtual void Enter()
     {
         
-            //entity.ShowState("Enemy State : " + name);
-
-        
-        startingTime = Time.time;
+       entity.ShowState(name);      
+       startingTime = Time.time;
     }
     public virtual void Exit()
     {

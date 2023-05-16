@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class E1_AttackState : AttackState
 {
     Enemy1 enemy;
+    bool animationPlayed;
+    Vector3 lastSeenPlayerLoc;
+
     public E1_AttackState(Entity entity, FiniteStateMachine stateMachine,Enemy1 enemy,string name) : base(entity, stateMachine,name)
     {
         this.enemy = enemy;
@@ -12,30 +16,46 @@ public class E1_AttackState : AttackState
 
     public override void Enter()
     {
-        base.Enter();
+        base.Enter();       
+        animationPlayed = false;
         enemy.isAttackAnimFinished = false;
-        enemy.StartCoroutine(enemy.WaitTime(1f));
-        enemy.anim.SetBool("isAttack", true);
-        
-        //anim baþlat ve anim içinde trigger oto oynayacak, attack methodu entity içinde olacak.
+
+           
     }
 
     public override void Exit()
     {
         base.Exit();
-        enemy.anim.SetBool("isAttack", false);
+        //enemy.anim.SetBool("isAttack", false);
     }
 
     public override void LogicUpdate()
     {
-        base.LogicUpdate();   
-        if (enemy.goToHurtState)
+        base.LogicUpdate();
+        if (!animationPlayed)
         {
-            stateMachine.ChangeState(enemy.knockBackState);
+            enemy.agent.SetDestination(enemy.Target.position);
         }
-        else if (enemy.isAttackAnimFinished || enemy.GetDistanceBetweenPlayer() > 3f)
+        if (enemy.IsEnemyHasReachedDestiantion() && !animationPlayed)
         {
-            stateMachine.ChangeState(enemy.idleState);
+            animationPlayed = true;
+            enemy.Anim.SetTrigger("isAttacking");
         }
+        if (enemy.isAttackAnimFinished)
+        {
+             stateMachine.ChangeState(enemy.moveState);
+
+        }
+
+        //if (enemy.goToHurtState)
+        //{
+        //    stateMachine.ChangeState(enemy.knockBackState);
+        //}
+        //else if (enemy.isAttackAnimFinished || enemy.GetDistanceBetweenPlayer() > 3f)
+        //{
+        //    stateMachine.ChangeState(enemy.idleState);
+        //}
     }
+
+
 }

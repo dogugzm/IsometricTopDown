@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using UnityEngine.UIElements;
 
 
 public class Entity : MonoBehaviour
@@ -10,10 +11,10 @@ public class Entity : MonoBehaviour
     public FiniteStateMachine stateMachine;
 
     public Rigidbody rb { get; private set; }
-    public Animator anim { get; private set; }
+    public Animator Anim { get; private set; }
     public NavMeshAgent agent { get; private set; }
-
     public Transform Target { get; private set; }
+
     public SkinnedMeshRenderer meshRend;
 
     protected float health;
@@ -25,31 +26,42 @@ public class Entity : MonoBehaviour
     public bool isAttackAnimFinished;
     [SerializeField] private LayerMask playerLayer;
     public float damage;
-    public TextMeshProUGUI showState;
+    public TextMeshPro showState;
+    private Vector3 closestPosition;
+    public int angle;
 
 
 
     public virtual void Start()
     {
+        
         goToHurtState = false;
         isAttackAnimFinished = false;
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         health = maxHealth;
         rb = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
+        Anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 
         stateMachine = new FiniteStateMachine();
+
     }
 
     public virtual void Update()
     {
         stateMachine.currentState.LogicUpdate();
+        FindMeshPosition();
+        Anim.SetFloat("Blend", agent.velocity.magnitude / agent.speed);
     }
 
     public float GetDistanceBetweenPlayer()
     {
-        return Vector3.Distance(transform.position, Target.position);
+        return Vector3.Distance(closestPosition, Player.closestPosition);
+    }
+
+    public Vector3 GetDirectionToPlayer()
+    {
+        return (Player.closestPosition - closestPosition).normalized;
     }
 
     public void DecreaseHealth(float damage) 
@@ -74,6 +86,56 @@ public class Entity : MonoBehaviour
         }
     }
 
+    public bool IsEnemyHasReachedDestiantion()
+    {
+        if (!agent.pathPending)
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+            return false;
+
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public Vector3 TargetOffset(Transform target)
+    {
+        Vector3 position;
+        position = target.position;
+        return Vector3.MoveTowards(position, closestPosition, .75f);
+    }
+
+    private void FindMeshPosition() //update den çýkar gerektiðinde çaðýr.
+    {
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(transform.position, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            closestPosition = hit.position;
+        }
+    }
+
+    public IEnumerator ChangeStateInSeconds(float time, State nextState)
+    {
+        yield return new WaitForSeconds(time);
+        stateMachine.ChangeState(nextState);
+    }
+
     public IEnumerator WaitTime(float time) {
         yield return new WaitForSeconds(time);
     }
@@ -91,23 +153,58 @@ public class Entity : MonoBehaviour
         
     }
 
-    public void CheckPlayerIfInsideAttackRange()
+
+    public void CheckPlayerIfInsideAttackRange()// animation event
     {
         
-        Collider[] players = Physics.OverlapSphere(transform.position, 2f, playerLayer);
+        Collider[] players = Physics.OverlapSphere(transform.position, 4f, playerLayer);
 
         foreach (Collider player in players) //range içinde 
         {
-            Player playerScript = player.GetComponent<Player>();
-            if (playerScript.StateMachine.CurrentState== playerScript.RollState || playerScript.StateMachine.CurrentState == playerScript.HitState || playerScript.StateMachine.CurrentState == playerScript.MeleeState)
+            Vector3 direction = Player.closestPosition - closestPosition;
+
+            if (Vector3.Angle(transform.forward, direction) < angle / 2)
             {
-                return;
+                Player playerScript = player.GetComponent<Player>();
+                if (playerScript.StateMachine.CurrentState== playerScript.RollState || playerScript.StateMachine.CurrentState == playerScript.HitState || playerScript.StateMachine.CurrentState == playerScript.MeleeState)
+                {
+                    return;
+                }
+                playerScript.damageTaken = damage;
+                playerScript.StateMachine.ChangeState(playerScript.HitState);
+                
             }
-            playerScript.damageTaken = damage;
-            playerScript.StateMachine.ChangeState(playerScript.HitState);
+
 
         }
     }
+
+    //public void AttackToPlayer() //MARKER: Animaton Event
+    //{
+
+    //    Collider[] hitEnemies = Physics.OverlapSphere(hitPoint.transform.position, range, enemyLayers);
+
+    //    foreach (Collider enemyCollider in hitEnemies)
+    //    {
+
+    //        Vector3 direction = enemyCollider.transform.position - Player.closestPosition;
+    //        if (Vector3.Angle(transform.forward, direction) < angle / 2)
+    //        {
+    //            if (enemyCollider.gameObject.layer == 7) //enemy layer 
+    //            {
+
+    //                enemyCollider.GetComponent<Enemy>().Hurt();  //damagable interface dene!
+    //            }
+    //            else if (enemyCollider.gameObject.layer == 9)
+    //            {
+    //                enemyCollider.GetComponent<Projectile>().GoBack();
+    //            }
+
+    //        }
+
+    //    }
+    //}
+
     #endregion
 
     #region GIZMOS

@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class E1_IdleState : IdleState
 {
@@ -12,35 +14,33 @@ public class E1_IdleState : IdleState
     }
 
     public override void Enter()
-    {
-        
+    {        
         base.Enter();
-        enemy.anim.SetBool("isIdle", true);
+        Debug.Log("Child");
 
+        enemy.agent.ResetPath();
+        enemy.agent.updateRotation = false;
+
+        //enemy.anim.SetBool("isIdle", true);
+        enemy.StartCoroutine(enemy.ChangeStateInSeconds(2, enemy.attackState));  
     }
 
     public override void Exit()
     {
         base.Exit();
-        enemy.anim.SetBool("isIdle", false);
+        //enemy.anim.SetBool("isIdle", false);
+        enemy.agent.updateRotation = true;
 
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (enemy.GetDistanceBetweenPlayer()<enemy.distance && enemy.GetDistanceBetweenPlayer()>3f)
-        {
-            stateMachine.ChangeState(enemy.moveState);
-        }
-        else if (enemy.goToHurtState)
-        {
-            stateMachine.ChangeState(enemy.knockBackState);
-        }
-        else if (enemy.IsEnemyDead() && stateMachine.currentState != enemy.deathState)
-        {
-            stateMachine.ChangeState(enemy.deathState);
-        }
+        enemy.transform.DOLookAt(new Vector3(enemy.Target.position.x, 0.8f, enemy.Target.position.z), 0.2f);
+
+
 
     }
+
+
 }

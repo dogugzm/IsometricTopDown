@@ -13,9 +13,8 @@ public class IdleState : State
     public override void Enter() 
     {
         base.Enter();
+        Debug.Log("Base");
         
-        entity.agent.isStopped = true;
-        entity.agent.ResetPath();
     }
 
     public override void Exit()

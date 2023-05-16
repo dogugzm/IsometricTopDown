@@ -26,14 +26,16 @@ public class PlayerMeleeState : PlayerState
         player.Anim.SetTrigger("isAttacking");     
         player.Sword.SetActive(true);
         player.SwordParticle.Play(); //TODO:4_SwordTrail
+
         if (player.currentEnemy!= null)
         {
             if (player.currentEnemy.IsLastHit())
             {
                 player.StartCoroutine(FinalCutDeath());
             }
+            target = player.currentEnemy.transform;
+
         }
-        target = player.currentEnemy.transform;
         
     }
 
@@ -45,7 +47,6 @@ public class PlayerMeleeState : PlayerState
         player.Sword.SetActive(false);
         player.controller.Move(Vector3.zero);
         DOTween.KillAll(); //maybe just on this script.
-        
     }
 
     public override void LogicalUpdate()

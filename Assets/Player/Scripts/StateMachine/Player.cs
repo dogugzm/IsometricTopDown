@@ -158,7 +158,7 @@ public class Player : MonoBehaviour
     {
         Vector3 position;
         position = target.position;
-        return Vector3.MoveTowards(position, closestPosition, .5f);
+        return Vector3.MoveTowards(position, closestPosition, .1f);
     }
 
     public void CameraShake(float effectSize)

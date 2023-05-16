@@ -18,7 +18,7 @@ public class E1_DeathState : State
         entity.agent.isStopped = true;
         entity.agent.ResetPath();
 
-        enemy.anim.SetBool("isDeath", true);
+        enemy.Anim.SetBool("isDeath", true);
         //particle, anim vb oynat
         entity.DestroyMe(2f);
     }

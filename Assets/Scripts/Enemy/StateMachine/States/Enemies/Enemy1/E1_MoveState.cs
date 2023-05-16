@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.Xml;
 using UnityEngine;
 
 public class E1_MoveState : MoveState
@@ -14,42 +16,52 @@ public class E1_MoveState : MoveState
     public override void Enter()
     {
         base.Enter();
-        enemy.anim.SetBool("isRun", true);
-
+        enemy.agent.updateRotation = false;  
 
     }
 
     public override void Exit()
     {
         base.Exit();
-        enemy.anim.SetBool("isRun", false);
+        enemy.agent.updateRotation = true;
 
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        enemy.agent.SetDestination(enemy.Target.position);
 
-        if (enemy.GetDistanceBetweenPlayer() > enemy.distance)
+        
+
+        enemy.transform.DOLookAt(new Vector3(enemy.Target.position.x , 0.8f , enemy.Target.position.z), 0.2f);
+        if (enemy.GetDistanceBetweenPlayer()<5)
+        {
+            enemy.agent.destination += enemy.GetDirectionToPlayer() * -5f;
+            
+            //enemy.agent.Move(enemy.GetDirectionToPlayer() * -5 * Time.deltaTime);
+        }
+        else
         {
             stateMachine.ChangeState(enemy.idleState);
         }
-        else if (enemy.goToHurtState)
-        {
-            stateMachine.ChangeState(enemy.knockBackState);
-        }
-        else if (enemy.GetDistanceBetweenPlayer()<3f)
-        {
-            stateMachine.ChangeState(enemy.attackState);
-        }
-        
-        else if (enemy.IsEnemyDead())
-        {
-            stateMachine.ChangeState(enemy.deathState);
 
-        }
-        
+
+        //enemy.agent.destination = enemy.transform.position + enemy.transform.forward * -5f;
+        //if (enemy.GetDistanceBetweenPlayer() > enemy.distance)
+        //{
+        //    stateMachine.ChangeState(enemy.idleState);
+        //}
+        //else if (enemy.goToHurtState)
+        //{
+        //    stateMachine.ChangeState(enemy.knockBackState);
+        //}
+       
+        //else if (enemy.IsEnemyDead())
+        //{
+        //    stateMachine.ChangeState(enemy.deathState);
+
+        //}
+
 
     }
 }
