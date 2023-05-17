@@ -18,12 +18,13 @@ public class PlayerShootState : PlayerState
         base.Enter();
         player.equipmentController.ChangeState(shootState);
         readyToShoot = false;
-
     }
 
     public override void Exit()
     {
         base.Exit();
+        player.Anim.SetBool("isCharging", false);
+
     }
 
     public override void LogicalUpdate()

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy1 : Entity
 {
     public ParticleSystem hitEffect;
+
     public E1_IdleState idleState { get; private set; }
     public E1_MoveState moveState { get; private set; }
     public E1_KnockBackState knockBackState { get; private set; }
@@ -25,7 +26,13 @@ public class Enemy1 : Entity
         stateMachine.Initialize(idleState);
     }
 
-  
+    public override void OnHit()
+    {
+        base.OnHit();
+        
+        stateMachine.ChangeState(knockBackState);
+    }
+
 
     public void PlayHitParticle()
     {

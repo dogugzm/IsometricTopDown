@@ -30,8 +30,8 @@ public class PlayerCombat3State : PlayerState
             {
                 player.StartCoroutine(FinalCutDeath());
             }
-        }
         target = player.currentEnemy.transform;
+        }
 
 
     }

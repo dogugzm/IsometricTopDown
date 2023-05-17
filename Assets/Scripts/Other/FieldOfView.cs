@@ -20,12 +20,10 @@ public class FieldOfView : MonoBehaviour
 
     [SerializeField] LayerMask enemyLayers;
    
-
     private void Start() {
 
        range = rangeNormal;
        angle = angleNormal;   
-        
     }
  
     public void AttackToEnemies() //MARKER: Animaton Event
@@ -41,11 +39,8 @@ public class FieldOfView : MonoBehaviour
             {
                 if (enemyCollider.gameObject.layer==7) //enemy layer 
                 {
-
-                    //enemyCollider.GetComponent<Entity>().stateMachine.ChangeState(enemyCollider.GetComponent<Entity>().);
-                    
-                    //enemyScript.stateMachine.ChangeState(enemyScript.idleState);
-
+                    enemyCollider.TryGetComponent<IDamagable>(out IDamagable damagableEnemy);
+                    damagableEnemy.OnHit();
                 }
                 else if (enemyCollider.gameObject.layer==9)
                 {

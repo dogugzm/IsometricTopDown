@@ -13,8 +13,6 @@ public class IdleState : State
     public override void Enter() 
     {
         base.Enter();
-        Debug.Log("Base");
-        
     }
 
     public override void Exit()

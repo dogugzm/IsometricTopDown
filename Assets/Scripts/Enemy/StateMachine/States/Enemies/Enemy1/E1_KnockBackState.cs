@@ -14,61 +14,61 @@ public class E1_KnockBackState : KnockBackState
 
     public override void Enter()
     {
-        base.Enter();
-        
+        base.Enter();      
         enemy.Anim.SetBool("isHit", true);
-        enemy.PlayHitParticle();
-     
+        enemy.PlayHitParticle();   
         enemy.DecreaseHealth(enemy.damageTaken);
-        enemy.StartCoroutine(Effect());
+        enemy.isHitAnimFinished = false;
+        //enemy.StartCoroutine(Effect());
 
     }
 
     public override void Exit()
     {
         base.Exit();
-        enemy.goToHurtState = false;
+        //enemy.goToHurtState = false;
         enemy.Anim.SetBool("isHit", false);
-
 
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (enemy.IsEnemyDead() && stateMachine.currentState !=enemy.deathState)
+        //çok az knockback belki
+
+        enemy.agent.Move(enemy.GetDirectionToPlayer() * -2f * Time.deltaTime);
+
+        //if (enemy.IsEnemyDead() && stateMachine.currentState !=enemy.deathState)
+        //{            
+        //    stateMachine.ChangeState(enemy.deathState);
+        //}
+
+        if (enemy.isHitAnimFinished)
         {
-            
-            stateMachine.ChangeState(enemy.deathState);
+            stateMachine.ChangeState(enemy.idleState);
 
         }
 
     }
-    IEnumerator Effect()
-    {
-        enemy.agent.speed = 10;
-        enemy.agent.angularSpeed = 0;
-        enemy.agent.acceleration = 8;
-        enemy.agent.velocity = enemy.Target.transform.forward * enemy.knockBackDistance;
-        enemy.meshRend.material.SetColor("_EmissionColor", Color.white);
-        enemy.meshRend.material.EnableKeyword("_EMISSION");
-        yield return new WaitForSeconds(0.1f);
-        enemy.meshRend.material.SetColor("_EmissionColor", Color.black);
+    //IEnumerator Effect()
+    //{
+    //    enemy.agent.speed = 10;
+    //    enemy.agent.angularSpeed = 0;
+    //    enemy.agent.acceleration = 8;
+    //    enemy.agent.velocity = enemy.Target.transform.forward * enemy.knockBackDistance;
+    //    //enemy.meshRend.material.SetColor("_EmissionColor", Color.white);
+    //    //enemy.meshRend.material.EnableKeyword("_EMISSION");
+    //    //yield return new WaitForSeconds(0.1f);
+    //    //enemy.meshRend.material.SetColor("_EmissionColor", Color.black);
 
+    //    yield return new WaitForSeconds(1f);
 
-
-        yield return new WaitForSeconds(1f);
-
-
-        enemy.agent.speed = 3.5f;
-        enemy.agent.angularSpeed = 120;
-        enemy.agent.acceleration = 8;
+    //    enemy.agent.speed = 3.5f;
+    //    enemy.agent.angularSpeed = 120;
+    //    enemy.agent.acceleration = 8;
        
+    //    stateMachine.ChangeState(enemy.idleState);
 
         
-
-        stateMachine.ChangeState(enemy.idleState);
-
-        
-    }
+    //}
 }

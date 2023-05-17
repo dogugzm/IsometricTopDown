@@ -6,6 +6,8 @@ public class PlayerHitState : PlayerState
 {
     public PlayerHitState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
+
+
     }
 
     public override void Enter()
@@ -24,25 +26,22 @@ public class PlayerHitState : PlayerState
     public override void LogicalUpdate()
     {
         base.LogicalUpdate();
-        
-        player.StartCoroutine(KnockBack());
-       
+
+        if (isHitAnimationFinished)
+        {
+            if (player.Speed > 0.1f)
+            {
+                stateMachine.ChangeState(player.MoveState);
+            }
+            else if (player.Speed < 0.1f)
+            {
+                stateMachine.ChangeState(player.IdleState);
+            }
+        }
 
     }
 
-    IEnumerator KnockBack()
-    {
-        player.controller.Move(-player.transform.forward * 2f * Time.deltaTime * 2f);
-        yield return new WaitForSeconds(1f);
-        if (player.Speed > 0.1f)
-        {
-            stateMachine.ChangeState(player.MoveState);
-        }
-        else if (player.Speed < 0.1f)
-        {
-            stateMachine.ChangeState(player.IdleState);
-        }
-    }
+  
 }
 
 

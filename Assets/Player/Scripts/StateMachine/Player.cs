@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
 
     #region ABOUT STATES
     public PlayerStateMachine StateMachine { get; private set; }
-
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
     public PlayerRollState RollState { get; private set; }
@@ -31,7 +30,6 @@ public class Player : MonoBehaviour
     public PlayerHeavyAttackState HeavyAttackState { get; private set; }
     public PlayerShootState ShootState { get; private set; }
     public PlayerHitState HitState { get; private set; }
-
 
     #endregion
 
@@ -51,7 +49,6 @@ public class Player : MonoBehaviour
 
     public LayerMask layerMask;
 
-
     [HideInInspector] public float InputX;
     [HideInInspector] public float InputZ;
     [HideInInspector] public float Speed;
@@ -60,7 +57,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public Vector3 desiredMoveDirection {get;  set;}
     [HideInInspector] public Vector3 AttackInputDirection { get; set; }
 
-    public Enemy currentEnemy;
+    public Entity currentEnemy;
 
     [HideInInspector] public static Vector3 closestPosition;
 
@@ -133,7 +130,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-
         StateMachine.CurrentState.LogicalUpdate();
         InputMagnitude();
         VerticalMovement();
@@ -141,16 +137,14 @@ public class Player : MonoBehaviour
         FindMeshPosition();
         ChangeAttackInputDirection();
         SetCurrentEnemy();
-
     }
 
     private void SetCurrentEnemy()
-    {
-        
+    {       
         RaycastHit info;
         if (Physics.SphereCast(transform.position, 0.5f, AttackInputDirection, out info, 5, layerMask))
         {
-            currentEnemy = info.collider.gameObject.GetComponent<Enemy>();
+            currentEnemy = info.collider.gameObject.GetComponent<Entity>();
         }
     }
 
@@ -243,10 +237,11 @@ public class Player : MonoBehaviour
     {
         StateMachine.CurrentState.HeavyAttackAnimationFinisTrigger();
         
-    }        
-
-
-
+    }
+    private void HitAnimationFinishTrigger()
+    {
+        StateMachine.CurrentState.HitAnimationFinisTrigger();
+    }
 
     #endregion
 

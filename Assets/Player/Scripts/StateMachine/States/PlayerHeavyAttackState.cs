@@ -28,9 +28,9 @@ public class PlayerHeavyAttackState : PlayerState
             {
                 player.StartCoroutine(FinalCutDeath());
             }
+        target = player.currentEnemy.transform;
         }
 
-        target = player.currentEnemy.transform;
 
     }
 

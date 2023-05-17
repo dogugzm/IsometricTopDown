@@ -6,10 +6,9 @@ using TMPro;
 using UnityEngine.UIElements;
 
 
-public class Entity : MonoBehaviour
+public class Entity : MonoBehaviour , IDamagable
 {
     public FiniteStateMachine stateMachine;
-
     public Rigidbody rb { get; private set; }
     public Animator Anim { get; private set; }
     public NavMeshAgent agent { get; private set; }
@@ -24,17 +23,15 @@ public class Entity : MonoBehaviour
     public float damageTaken;
     public float knockBackDistance;
     public bool isAttackAnimFinished;
+    public bool isHitAnimFinished;
     [SerializeField] private LayerMask playerLayer;
     public float damage;
     public TextMeshPro showState;
     private Vector3 closestPosition;
     public int angle;
 
-
-
     public virtual void Start()
-    {
-        
+    {        
         goToHurtState = false;
         isAttackAnimFinished = false;
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -42,9 +39,7 @@ public class Entity : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-
         stateMachine = new FiniteStateMachine();
-
     }
 
     public virtual void Update()
@@ -86,6 +81,16 @@ public class Entity : MonoBehaviour
         }
     }
 
+    public bool IsLastHit()
+    {
+        if (health <= damage)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public bool IsEnemyHasReachedDestiantion()
     {
         if (!agent.pathPending)
@@ -111,6 +116,12 @@ public class Entity : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void LookAtPlayer()
+    {
+        var lookrotation = Quaternion.LookRotation(GetDirectionToPlayer()); //this will automatically keep 'up' up, but if you want to rotate around another axis you can add it
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookrotation, 150f * Time.deltaTime);
     }
 
     public Vector3 TargetOffset(Transform target)
@@ -146,11 +157,16 @@ public class Entity : MonoBehaviour
     }
 
     #region Animation Event
-
+    
     public void AttackAnimFinished()
     {
         isAttackAnimFinished = true;
         
+    }
+
+    public void HitAnimFinished()
+    {
+        isHitAnimFinished = true;
     }
 
 
@@ -171,41 +187,24 @@ public class Entity : MonoBehaviour
                     return;
                 }
                 playerScript.damageTaken = damage;
+
                 playerScript.StateMachine.ChangeState(playerScript.HitState);
                 
             }
-
-
         }
     }
 
-    //public void AttackToPlayer() //MARKER: Animaton Event
-    //{
+   
 
-    //    Collider[] hitEnemies = Physics.OverlapSphere(hitPoint.transform.position, range, enemyLayers);
-
-    //    foreach (Collider enemyCollider in hitEnemies)
-    //    {
-
-    //        Vector3 direction = enemyCollider.transform.position - Player.closestPosition;
-    //        if (Vector3.Angle(transform.forward, direction) < angle / 2)
-    //        {
-    //            if (enemyCollider.gameObject.layer == 7) //enemy layer 
-    //            {
-
-    //                enemyCollider.GetComponent<Enemy>().Hurt();  //damagable interface dene!
-    //            }
-    //            else if (enemyCollider.gameObject.layer == 9)
-    //            {
-    //                enemyCollider.GetComponent<Projectile>().GoBack();
-    //            }
-
-    //        }
-
-    //    }
-    //}
 
     #endregion
+
+
+    public virtual void OnHit()
+    {
+
+
+    }
 
     #region GIZMOS
 
@@ -213,6 +212,7 @@ public class Entity : MonoBehaviour
     {
         Gizmos.DrawWireSphere(transform.position, 2f);
     }
+
 
     #endregion
 }

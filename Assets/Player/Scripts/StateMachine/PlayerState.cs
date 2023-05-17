@@ -15,7 +15,7 @@ public class PlayerState
     protected bool isCombat3AnimationFinished;
     protected bool isDashAttackAnimationFinished;
     protected bool isHeavyAttackAnimationFinished;
-
+    protected bool isHitAnimationFinished;
 
     public PlayerState(Player player,PlayerStateMachine stateMachine,PlayerData playerData,string stateName)
     {
@@ -36,9 +36,9 @@ public class PlayerState
         isCombat3AnimationFinished = false;
         isDashAttackAnimationFinished = false;
         isHeavyAttackAnimationFinished = false;
-
-
+        isHitAnimationFinished = false;
     }
+
     public virtual void Exit()
     {
 
@@ -69,12 +69,13 @@ public class PlayerState
     {
         isDashAttackAnimationFinished = true;
     }
-
     public virtual void HeavyAttackAnimationFinisTrigger()
     {
         isHeavyAttackAnimationFinished = true;
     }
-
-
+    public virtual void HitAnimationFinisTrigger()
+    {
+        isHitAnimationFinished = true;
+    }
 
 }
