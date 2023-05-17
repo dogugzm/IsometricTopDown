@@ -137,8 +137,7 @@ public class Enemy : MonoBehaviour
         StartCoroutine(KnockBack());  
         hitParticle.Play();  
         animator.SetTrigger("TisHit");
-        health -= damage;
-        
+        health -= damage;        
     }
 
     public bool IsLastHit()

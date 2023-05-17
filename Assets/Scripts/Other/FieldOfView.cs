@@ -40,7 +40,11 @@ public class FieldOfView : MonoBehaviour
                 if (enemyCollider.gameObject.layer==7) //enemy layer 
                 {
                     enemyCollider.TryGetComponent<IDamagable>(out IDamagable damagableEnemy);
-                    damagableEnemy.OnHit();
+                    
+                    
+                        damagableEnemy.OnHit();
+                    
+                    
                 }
                 else if (enemyCollider.gameObject.layer==9)
                 {

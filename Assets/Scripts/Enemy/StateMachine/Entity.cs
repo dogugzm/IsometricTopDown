@@ -205,6 +205,11 @@ public class Entity : MonoBehaviour , IDamagable
 
 
     }
+    public virtual void OnHitGreate()
+    {
+
+
+    }
 
     #region GIZMOS
 
