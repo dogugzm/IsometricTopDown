@@ -14,7 +14,8 @@ public class E1_KnockBackState : KnockBackState
 
     public override void Enter()
     {
-        base.Enter();      
+        base.Enter();
+        Debug.Log("hit");
         enemy.Anim.SetBool("isHit", true);
         enemy.PlayHitParticle();   
         enemy.DecreaseHealth(enemy.damageTaken);

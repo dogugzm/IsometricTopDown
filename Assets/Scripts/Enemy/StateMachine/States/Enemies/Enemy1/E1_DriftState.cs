@@ -1,10 +1,4 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.Xml;
-using TMPro;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class E1_DriftState : IdleState
 {
@@ -19,7 +13,9 @@ public class E1_DriftState : IdleState
     {
         base.Enter();
         enemy.agent.ResetPath();
-        enemy.Anim.SetBool("isHit", true);
+        enemy.PlayHitParticle();
+        enemy.DecreaseHealth(enemy.damageTaken);
+        enemy.Anim.SetBool("isHitBig", true);
 
     }
 
@@ -27,7 +23,7 @@ public class E1_DriftState : IdleState
     {
         base.Exit();
         enemy.agent.ResetPath();
-        enemy.Anim.SetBool("isHit", false);
+        enemy.Anim.SetBool("isHitBig", false);
 
 
     }
@@ -35,7 +31,13 @@ public class E1_DriftState : IdleState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        enemy.agent.Move(enemy.GetDirectionToPlayer() * -10f * Time.deltaTime);
+        enemy.agent.Move(enemy.GetDirectionToPlayer() * -5f * Time.deltaTime);
+
+        if (enemy.isDriftAnimFinished)
+        {
+            stateMachine.ChangeState(enemy.idleState);
+
+        }
 
 
 

@@ -151,8 +151,8 @@ public class Player : MonoBehaviour
     public Vector3 TargetOffset(Transform target)
     {
         Vector3 position;
-        position = target.position;
-        return Vector3.MoveTowards(position, closestPosition, .1f);
+        position = target.GetComponent<Entity>().closestPosition;
+        return Vector3.MoveTowards(position, closestPosition, 1);
     }
 
     public void CameraShake(float effectSize)

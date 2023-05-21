@@ -28,15 +28,13 @@ public class Enemy1 : Entity
 
     public override void OnHit()
     {
-        base.OnHit();
-        
+        base.OnHit();   
         stateMachine.ChangeState(knockBackState);
     }
 
     public override void OnHitGreate()
     {
         base.OnHit();
-
         stateMachine.ChangeState(driftState);
     }
 

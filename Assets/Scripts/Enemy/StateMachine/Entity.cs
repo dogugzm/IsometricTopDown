@@ -24,10 +24,12 @@ public class Entity : MonoBehaviour , IDamagable
     public float knockBackDistance;
     public bool isAttackAnimFinished;
     public bool isHitAnimFinished;
+    public bool isDriftAnimFinished;
+
     [SerializeField] private LayerMask playerLayer;
     public float damage;
     public TextMeshPro showState;
-    private Vector3 closestPosition;
+    public Vector3 closestPosition;
     public int angle;
 
     public virtual void Start()
@@ -168,6 +170,10 @@ public class Entity : MonoBehaviour , IDamagable
     {
         isHitAnimFinished = true;
     }
+    public void DriftAnimFinished()
+    {
+        isDriftAnimFinished = true;
+    }
 
 
     public void CheckPlayerIfInsideAttackRange()// animation event
@@ -178,7 +184,7 @@ public class Entity : MonoBehaviour , IDamagable
         foreach (Collider player in players) //range içinde 
         {
             Vector3 direction = Player.closestPosition - closestPosition;
-
+            
             if (Vector3.Angle(transform.forward, direction) < angle / 2)
             {
                 Player playerScript = player.GetComponent<Player>();
