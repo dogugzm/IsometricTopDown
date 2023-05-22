@@ -59,6 +59,7 @@ public class PlayerMeleeState : PlayerState
             player.transform.DOLookAt(target.position, 0.2f);
             player.transform.DOMove(player.TargetOffset(target), 1f);
 
+
         }
 
         if (Input.GetMouseButtonDown(0))

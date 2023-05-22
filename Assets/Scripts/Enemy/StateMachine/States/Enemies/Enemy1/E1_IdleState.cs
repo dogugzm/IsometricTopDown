@@ -9,7 +9,7 @@ using UnityEngine.AI;
 public class E1_IdleState : IdleState
 {
     private Enemy1 enemy;
-
+    IEnumerator coroutine;
     public E1_IdleState(Entity entity, FiniteStateMachine stateMachine,Enemy1 enemy ,string name) : base(entity, stateMachine, name)
     {
         this.enemy = enemy;
@@ -19,13 +19,15 @@ public class E1_IdleState : IdleState
     {        
         base.Enter();
         enemy.agent.ResetPath();
-        enemy.StartCoroutine(enemy.ChangeStateInSeconds(2, enemy.attackState));
+        coroutine = enemy.ChangeStateInSeconds(2, enemy.attackState);
+        enemy.StartCoroutine(coroutine);
     }
 
     public override void Exit()
     {
         base.Exit();
         enemy.agent.ResetPath();
+        enemy.StopCoroutine(coroutine);
 
     }
 

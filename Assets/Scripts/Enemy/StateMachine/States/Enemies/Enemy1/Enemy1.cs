@@ -9,6 +9,7 @@ public class Enemy1 : Entity
     public E1_IdleState idleState { get; private set; }
     public E1_MoveState moveState { get; private set; }
     public E1_KnockBackState knockBackState { get; private set; }
+    public E1_KnockBackContinueState knockBackContinueState { get; private set; }
     public E1_DeathState deathState { get; private set; }
 
     public E1_AttackState attackState { get; private set; }
@@ -23,13 +24,21 @@ public class Enemy1 : Entity
         deathState = new E1_DeathState(this, stateMachine, this,"Death");
         attackState = new E1_AttackState(this, stateMachine, this,"Attack");
         driftState = new E1_DriftState(this, stateMachine, this, "Drift");
+        knockBackContinueState = new E1_KnockBackContinueState(this, stateMachine, this, "Hit2");
         stateMachine.Initialize(idleState);
     }
 
     public override void OnHit()
     {
-        base.OnHit();   
-        stateMachine.ChangeState(knockBackState);
+        base.OnHit();
+        if (stateMachine.currentState == knockBackState)
+        {
+            stateMachine.ChangeState(knockBackContinueState);
+        }
+        else
+        {
+            stateMachine.ChangeState(knockBackState);
+        }
     }
 
     public override void OnHitGreate()

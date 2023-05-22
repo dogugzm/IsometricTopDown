@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerState 
+public class PlayerState
 {
     protected Player player;
     protected PlayerStateMachine stateMachine;
@@ -16,18 +14,20 @@ public class PlayerState
     protected bool isDashAttackAnimationFinished;
     protected bool isHeavyAttackAnimationFinished;
     protected bool isHitAnimationFinished;
+    protected bool isParryAnimationFinished;
 
-    public PlayerState(Player player,PlayerStateMachine stateMachine,PlayerData playerData,string stateName)
+
+    public PlayerState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName)
     {
         this.player = player;
         this.stateMachine = stateMachine;
         this.playerData = playerData;
-        this.stateName = stateName;       
+        this.stateName = stateName;
     }
 
     public virtual void Enter()
     {
-        player.Anim.SetFloat("Blend", 0,0.01f,Time.deltaTime);
+        player.Anim.SetFloat("Blend", 0, 0.01f, Time.deltaTime);
         player.currentStateText = stateName;
         startTime = Time.time;
         isRollAnimationFinished = false;
@@ -37,6 +37,8 @@ public class PlayerState
         isDashAttackAnimationFinished = false;
         isHeavyAttackAnimationFinished = false;
         isHitAnimationFinished = false;
+        isParryAnimationFinished = false;
+
     }
 
     public virtual void Exit()
@@ -76,6 +78,10 @@ public class PlayerState
     public virtual void HitAnimationFinisTrigger()
     {
         isHitAnimationFinished = true;
+    }
+    public virtual void ParryAnimationFinisTrigger()
+    {
+        isParryAnimationFinished = true;
     }
 
 }

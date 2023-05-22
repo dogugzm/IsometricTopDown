@@ -20,7 +20,6 @@ public class FieldOfView : MonoBehaviour
 
     private void Start()
     {
-
         range = rangeNormal;
         angle = angleNormal;
     }

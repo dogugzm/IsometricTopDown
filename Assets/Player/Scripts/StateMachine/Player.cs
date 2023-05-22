@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     public PlayerHeavyAttackState HeavyAttackState { get; private set; }
     public PlayerShootState ShootState { get; private set; }
     public PlayerHitState HitState { get; private set; }
+    public PlayerParryState ParryState { get; private set; }
+
 
     #endregion
 
@@ -54,8 +56,10 @@ public class Player : MonoBehaviour
     [HideInInspector] public float Speed;
     [HideInInspector] public bool CanDash = true;
 
-    [HideInInspector] public Vector3 desiredMoveDirection {get;  set;}
+    [HideInInspector] public Vector3 desiredMoveDirection { get; set; }
     [HideInInspector] public Vector3 AttackInputDirection { get; set; }
+
+    public List<Entity> ParriableEnemies;
 
     public Entity currentEnemy;
 
@@ -67,8 +71,6 @@ public class Player : MonoBehaviour
     public GameObject CinematicCamera;
     public Transform CinematicCameraFocusObject;
 
-
-
     public float health;
     public float maxHealth = 100;
     public float damageTaken;
@@ -77,9 +79,11 @@ public class Player : MonoBehaviour
     public float Velocity;
     public float desiredRotationSpeed = 10f;
 
-    private Vector3 verticalVelocity;
+    private Vector3 verticalVelocity = Vector3.zero;
 
     public ParticleSystem SwordParticle;
+    public ParticleSystem ParryParticle;
+
 
     bool chainStarted;
 
@@ -101,11 +105,11 @@ public class Player : MonoBehaviour
     }
 
     private void Awake()
-    {   
-        chainStarted=false;
+    {
+        chainStarted = false;
         StateMachine = new PlayerStateMachine();
-        IdleState = new PlayerIdleState(this, StateMachine, playerData,"IDLE");
-        MoveState = new PlayerMoveState(this, StateMachine, playerData,"MOVE");
+        IdleState = new PlayerIdleState(this, StateMachine, playerData, "IDLE");
+        MoveState = new PlayerMoveState(this, StateMachine, playerData, "MOVE");
         RollState = new PlayerRollState(this, StateMachine, playerData, "ROLL");
         MeleeState = new PlayerMeleeState(this, StateMachine, playerData, "MELEE");
         Combat2State = new PlayerCombat2State(this, StateMachine, playerData, "COMBAT2");
@@ -114,6 +118,8 @@ public class Player : MonoBehaviour
         HitState = new PlayerHitState(this, StateMachine, playerData, "HIT");
         DashCombatState = new PlayerDashCombatState(this, StateMachine, playerData, "DASH_ATTACK");
         HeavyAttackState = new PlayerHeavyAttackState(this, StateMachine, playerData, "HEAVY_ATTACK");
+        ParryState = new PlayerParryState(this, StateMachine, playerData, "PARRY");
+
 
 
     }
@@ -140,7 +146,7 @@ public class Player : MonoBehaviour
     }
 
     private void SetCurrentEnemy()
-    {       
+    {
         RaycastHit info;
         if (Physics.SphereCast(transform.position, 0.5f, AttackInputDirection, out info, 5, layerMask))
         {
@@ -152,12 +158,12 @@ public class Player : MonoBehaviour
     {
         Vector3 position;
         position = target.GetComponent<Entity>().closestPosition;
-        return Vector3.MoveTowards(position, closestPosition, 1);
+        return Vector3.MoveTowards(position, closestPosition, 0.9f);
     }
 
     public void CameraShake(float effectSize)
     {
-        CinemachineShake.instance.ShakeCamera(effectSize, 0.2f); 
+        CinemachineShake.instance.ShakeCamera(effectSize, 0.2f);
     }
 
     #region IN HERE METHODS
@@ -174,7 +180,7 @@ public class Player : MonoBehaviour
         {
             Speed *= 2;
         }
-        
+
     }
     private void VerticalMovement()
     {
@@ -184,11 +190,12 @@ public class Player : MonoBehaviour
         }
         verticalVelocity.y += -9.81f * Time.deltaTime;
         controller.Move(verticalVelocity * Time.deltaTime);
+        
     }
 
     private void RotationJob()
     {
-        if (desiredMoveDirection== Vector3.zero)
+        if (desiredMoveDirection == Vector3.zero)
         {
             return;
 
@@ -216,31 +223,50 @@ public class Player : MonoBehaviour
     private void RollAnimationFinishTrigger()
     {
         StateMachine.CurrentState.RollAnimationFinishTrigger();
-    }  
+    }
     private void MeleeAnimationFinishTrigger()
     {
         StateMachine.CurrentState.MeleeAnimationFinishTrigger();
-    }  
+    }
     private void Combat2AnimationFinishTrigger()
     {
         StateMachine.CurrentState.Combat2AnimationFinishTrigger();
-    }  
+    }
     private void Combat3AnimationFinishTrigger()
     {
+        //Debug.Log("animation finished");
         StateMachine.CurrentState.Combat3AnimationFinishTrigger();
     }
     private void DashAttackAnimationFinishTrigger()
     {
         StateMachine.CurrentState.DashAttackAnimationFinishTrigger();
     }
-    private void HeavyAttackAnimationFinishTrigger() 
+    private void HeavyAttackAnimationFinishTrigger()
     {
         StateMachine.CurrentState.HeavyAttackAnimationFinisTrigger();
-        
+
     }
     private void HitAnimationFinishTrigger()
     {
         StateMachine.CurrentState.HitAnimationFinisTrigger();
+    }
+    private void ParryAnimationFinishTrigger()
+    {
+        StateMachine.CurrentState.ParryAnimationFinisTrigger();
+    }
+
+    public void ParryParticlePlay()
+    {
+        StartCoroutine(ParryEffect());
+    }
+
+    IEnumerator ParryEffect()
+    {
+        ParryParticle.Play();
+        Time.timeScale = 0.2f;
+        yield return new WaitForSeconds(0.05f);
+        Time.timeScale = 1f;
+
     }
 
     #endregion
@@ -253,6 +279,21 @@ public class Player : MonoBehaviour
     public void ChangeAttackInputDirection()
     {
         AttackInputDirection = (Cursor.instance.pointToLook - closestPosition).normalized;
+    }
+
+    public bool IsInDamagableState()
+    {
+        if (StateMachine.CurrentState == RollState ||
+            StateMachine.CurrentState == HitState ||
+            StateMachine.CurrentState == ParryState)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+
+        }
     }
 
     private void OnGUI()

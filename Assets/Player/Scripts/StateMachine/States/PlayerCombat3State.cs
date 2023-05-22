@@ -60,7 +60,7 @@ public class PlayerCombat3State : PlayerState
         if (isCombat3AnimationFinished)
         {
             
-            if (player.Speed > 0.1f)
+            if (player.Speed >= 0.1f)
             {
                 stateMachine.ChangeState(player.MoveState);
             }

@@ -14,8 +14,7 @@ public class E1_KnockBackState : KnockBackState
 
     public override void Enter()
     {
-        base.Enter();
-        Debug.Log("hit");
+        base.Enter();      
         enemy.Anim.SetBool("isHit", true);
         enemy.PlayHitParticle();   
         enemy.DecreaseHealth(enemy.damageTaken);
@@ -29,8 +28,8 @@ public class E1_KnockBackState : KnockBackState
         base.Exit();
         //enemy.goToHurtState = false;
         enemy.Anim.SetBool("isHit", false);
-
     }
+
 
     public override void LogicUpdate()
     {

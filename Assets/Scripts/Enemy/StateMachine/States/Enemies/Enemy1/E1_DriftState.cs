@@ -15,6 +15,7 @@ public class E1_DriftState : IdleState
         enemy.agent.ResetPath();
         enemy.PlayHitParticle();
         enemy.DecreaseHealth(enemy.damageTaken);
+        enemy.isDriftAnimFinished = false;
         enemy.Anim.SetBool("isHitBig", true);
 
     }

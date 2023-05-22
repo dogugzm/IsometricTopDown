@@ -1,18 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-using TMPro;
-using UnityEngine.UIElements;
 
 
-public class Entity : MonoBehaviour , IDamagable
+public class Entity : MonoBehaviour, IDamagable
 {
     public FiniteStateMachine stateMachine;
     public Rigidbody rb { get; private set; }
     public Animator Anim { get; private set; }
     public NavMeshAgent agent { get; private set; }
     public Transform Target { get; private set; }
+    public GameObject ParryIndiciator;
 
     public SkinnedMeshRenderer meshRend;
 
@@ -24,7 +23,10 @@ public class Entity : MonoBehaviour , IDamagable
     public float knockBackDistance;
     public bool isAttackAnimFinished;
     public bool isHitAnimFinished;
+    public bool isHit2AnimFinished;
     public bool isDriftAnimFinished;
+    public bool isParriable;
+
 
     [SerializeField] private LayerMask playerLayer;
     public float damage;
@@ -33,9 +35,15 @@ public class Entity : MonoBehaviour , IDamagable
     public int angle;
 
     public virtual void Start()
-    {        
+    {
+
         goToHurtState = false;
         isAttackAnimFinished = false;
+        isHitAnimFinished = false;
+        isHit2AnimFinished = false;
+        isDriftAnimFinished = false;
+        isParriable = false;
+
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         health = maxHealth;
         rb = GetComponent<Rigidbody>();
@@ -61,19 +69,19 @@ public class Entity : MonoBehaviour , IDamagable
         return (Player.closestPosition - closestPosition).normalized;
     }
 
-    public void DecreaseHealth(float damage) 
+    public void DecreaseHealth(float damage)
     {
         health -= damage;
     }
 
     public void DestroyMe(float time)
     {
-        Destroy(gameObject,time);
+        Destroy(gameObject, time);
     }
 
-    public bool IsEnemyDead() 
+    public bool IsEnemyDead()
     {
-        if (health<=0)
+        if (health <= 0)
         {
             return true;
         }
@@ -110,7 +118,7 @@ public class Entity : MonoBehaviour , IDamagable
             }
             else
             {
-            return false;
+                return false;
 
             }
         }
@@ -149,9 +157,6 @@ public class Entity : MonoBehaviour , IDamagable
         stateMachine.ChangeState(nextState);
     }
 
-    public IEnumerator WaitTime(float time) {
-        yield return new WaitForSeconds(time);
-    }
 
     public void ShowState(string a)
     {
@@ -159,52 +164,63 @@ public class Entity : MonoBehaviour , IDamagable
     }
 
     #region Animation Event
-    
+
     public void AttackAnimFinished()
     {
         isAttackAnimFinished = true;
-        
     }
-
     public void HitAnimFinished()
     {
         isHitAnimFinished = true;
+    }
+    public void Hit2AnimFinished()
+    {
+        isHit2AnimFinished = true;
     }
     public void DriftAnimFinished()
     {
         isDriftAnimFinished = true;
     }
+    public void SetParriableTrue()
+    {
+        isParriable = true;
+        ParryIndiciator.SetActive(true);
+        Target.GetComponent<Player>().ParriableEnemies.Add(this);
+    }
+    public void SetParriableFalse()
+    {
+        isParriable = false;
+        ParryIndiciator.SetActive(false);
+        Target.GetComponent<Player>().ParriableEnemies.Remove(this);
+    }
 
 
     public void CheckPlayerIfInsideAttackRange()// animation event
     {
-        
         Collider[] players = Physics.OverlapSphere(transform.position, 4f, playerLayer);
 
         foreach (Collider player in players) //range içinde 
         {
             Vector3 direction = Player.closestPosition - closestPosition;
-            
+
             if (Vector3.Angle(transform.forward, direction) < angle / 2)
             {
                 Player playerScript = player.GetComponent<Player>();
-                if (playerScript.StateMachine.CurrentState== playerScript.RollState || playerScript.StateMachine.CurrentState == playerScript.HitState || playerScript.StateMachine.CurrentState == playerScript.MeleeState)
+                if (playerScript.IsInDamagableState())
                 {
-                    return;
+                    playerScript.damageTaken = damage;
+                    playerScript.StateMachine.ChangeState(playerScript.HitState);
+                    
                 }
-                playerScript.damageTaken = damage;
 
-                playerScript.StateMachine.ChangeState(playerScript.HitState);
-                
             }
         }
     }
 
-   
-
 
     #endregion
 
+    #region Interface Implementation Hit
 
     public virtual void OnHit()
     {
@@ -216,6 +232,7 @@ public class Entity : MonoBehaviour , IDamagable
 
 
     }
+    #endregion
 
     #region GIZMOS
 
