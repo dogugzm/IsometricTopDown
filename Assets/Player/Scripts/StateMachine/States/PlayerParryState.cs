@@ -29,9 +29,7 @@ public class PlayerParryState : PlayerState
         player.Anim.ResetTrigger("isParried");
         player.SwordParticle.Stop();
         player.ParryParticle.Stop();
-
         player.Sword.SetActive(false);
-
     }
 
     public override void LogicalUpdate()
@@ -50,16 +48,14 @@ public class PlayerParryState : PlayerState
             {
                 stateMachine.ChangeState(player.MoveState);
             }
+
             else if (player.Speed < 0.1f)
             {
                 stateMachine.ChangeState(player.IdleState);
             }
         }
-
     }
 
-
-  
 }
 
 

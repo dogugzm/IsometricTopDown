@@ -25,7 +25,10 @@ public class Entity : MonoBehaviour, IDamagable
     public bool isHitAnimFinished;
     public bool isHit2AnimFinished;
     public bool isDriftAnimFinished;
+    public bool isParryAnimFinished;
     public bool isParriable;
+    //public bool isParried = false;
+
 
 
     [SerializeField] private LayerMask playerLayer;
@@ -43,6 +46,7 @@ public class Entity : MonoBehaviour, IDamagable
         isHit2AnimFinished = false;
         isDriftAnimFinished = false;
         isParriable = false;
+        isParryAnimFinished = false;
 
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         health = maxHealth;
@@ -77,6 +81,11 @@ public class Entity : MonoBehaviour, IDamagable
     public void DestroyMe(float time)
     {
         Destroy(gameObject, time);
+    }
+
+    public virtual void ParriedState()
+    {
+
     }
 
     public bool IsEnemyDead()
@@ -193,6 +202,11 @@ public class Entity : MonoBehaviour, IDamagable
         ParryIndiciator.SetActive(false);
         Target.GetComponent<Player>().ParriableEnemies.Remove(this);
     }
+    public void ParryAnimFinished()
+    {
+        isParryAnimFinished = true;
+    }
+
 
 
     public void CheckPlayerIfInsideAttackRange()// animation event
@@ -208,6 +222,7 @@ public class Entity : MonoBehaviour, IDamagable
                 Player playerScript = player.GetComponent<Player>();
                 if (playerScript.IsInDamagableState())
                 {
+                    Debug.Log(playerScript.StateMachine.CurrentState);
                     playerScript.damageTaken = damage;
                     playerScript.StateMachine.ChangeState(playerScript.HitState);
                     

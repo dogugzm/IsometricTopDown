@@ -42,13 +42,13 @@ public class PlayerIdleState : PlayerState
         if (Input.GetKeyDown(KeyCode.Mouse2))
         {
             stateMachine.ChangeState(player.HeavyAttackState);
-
         }
         if (player.ParriableEnemies.Count != 0)
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 stateMachine.ChangeState(player.ParryState);
+                player.ParriableEnemies[0].ParriedState();
             }
         }
         

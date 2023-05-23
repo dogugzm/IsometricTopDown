@@ -20,7 +20,6 @@ public class E1_AttackState : AttackState
         animationPlayed = false;
         enemy.isAttackAnimFinished = false;
 
-           
     }
 
     public override void Exit()
@@ -32,6 +31,11 @@ public class E1_AttackState : AttackState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        //if (enemy.isParried)
+        //{
+        //    stateMachine.ChangeState(enemy.parriedState);
+        //    return;
+        //}
         if (!animationPlayed)
         {
             enemy.agent.SetDestination(enemy.Target.position);

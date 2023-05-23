@@ -5,15 +5,15 @@ using UnityEngine;
 public class Enemy1 : Entity
 {
     public ParticleSystem hitEffect;
-
     public E1_IdleState idleState { get; private set; }
     public E1_MoveState moveState { get; private set; }
     public E1_KnockBackState knockBackState { get; private set; }
     public E1_KnockBackContinueState knockBackContinueState { get; private set; }
     public E1_DeathState deathState { get; private set; }
-
     public E1_AttackState attackState { get; private set; }
     public E1_DriftState driftState { get; private set; }
+    public E1_ParriedState parriedState { get; private set; }
+
 
     public override void Start()
     {   
@@ -25,6 +25,8 @@ public class Enemy1 : Entity
         attackState = new E1_AttackState(this, stateMachine, this,"Attack");
         driftState = new E1_DriftState(this, stateMachine, this, "Drift");
         knockBackContinueState = new E1_KnockBackContinueState(this, stateMachine, this, "Hit2");
+        parriedState = new E1_ParriedState(this, stateMachine, this, "Parried");
+
         stateMachine.Initialize(idleState);
     }
 
@@ -52,5 +54,12 @@ public class Enemy1 : Entity
         hitEffect.Play();
     }
 
-    
+    public override void ParriedState()
+    {
+        base.ParriedState();
+        stateMachine.ChangeState(parriedState);
+
+    }
+
+
 }

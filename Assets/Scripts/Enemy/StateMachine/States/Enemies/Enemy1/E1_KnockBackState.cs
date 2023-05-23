@@ -18,7 +18,6 @@ public class E1_KnockBackState : KnockBackState
         enemy.Anim.SetBool("isHit", true);
         enemy.PlayHitParticle();   
         enemy.DecreaseHealth(enemy.damageTaken);
-        enemy.isHitAnimFinished = false;
         //enemy.StartCoroutine(Effect());
 
     }
@@ -27,6 +26,7 @@ public class E1_KnockBackState : KnockBackState
     {
         base.Exit();
         //enemy.goToHurtState = false;
+        enemy.isHitAnimFinished = false;
         enemy.Anim.SetBool("isHit", false);
     }
 
