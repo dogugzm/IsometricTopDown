@@ -45,7 +45,14 @@ public class E1_KnockBackState : KnockBackState
 
         if (enemy.isHitAnimFinished)
         {
-            stateMachine.ChangeState(enemy.idleState);
+            if (enemy.IsEnemyDead())
+            {
+                stateMachine.ChangeState(enemy.deathState);
+            }
+            else
+            {
+                stateMachine.ChangeState(enemy.idleState);
+            }
 
         }
 

@@ -19,7 +19,7 @@ public class E1_IdleState : IdleState
     {        
         base.Enter();
         enemy.agent.ResetPath();
-        coroutine = enemy.ChangeStateInSeconds(2, enemy.attackState);
+        coroutine = enemy.ChangeStateInSeconds(Random.Range(2,5), enemy.attackState);
         enemy.StartCoroutine(coroutine);
     }
 

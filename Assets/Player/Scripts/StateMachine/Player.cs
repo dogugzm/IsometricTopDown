@@ -311,6 +311,7 @@ public class Player : MonoBehaviour
         //Gizmos.DrawWireSphere(transform.position, 1);
         if (currentEnemy != null)
             Gizmos.DrawSphere(currentEnemy.transform.position, 1f);
+      
     }
 
 }

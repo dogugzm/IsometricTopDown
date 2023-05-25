@@ -36,7 +36,7 @@ public class PlayerRollState : PlayerState
     public override void LogicalUpdate()
     {
         base.LogicalUpdate();
-        player.controller.Move(player.desiredMoveDirection.normalized * 20f * Time.deltaTime);
+        player.controller.Move(player.desiredMoveDirection.normalized * 10f * Time.deltaTime);
         if (Input.GetMouseButtonDown(0))
         {
             dashCombatActivated = true;

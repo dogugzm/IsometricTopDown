@@ -207,8 +207,6 @@ public class Entity : MonoBehaviour, IDamagable
         isParryAnimFinished = true;
     }
 
-
-
     public void CheckPlayerIfInsideAttackRange()// animation event
     {
         Collider[] players = Physics.OverlapSphere(transform.position, 4f, playerLayer);
@@ -231,6 +229,8 @@ public class Entity : MonoBehaviour, IDamagable
             }
         }
     }
+
+    //TODO: damagable stateler eklenmeli ve death statinde daha fazla damage yememeliyim.
 
 
     #endregion

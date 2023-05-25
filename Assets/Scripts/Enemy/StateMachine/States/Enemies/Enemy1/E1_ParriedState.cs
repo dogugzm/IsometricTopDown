@@ -6,6 +6,7 @@ public class E1_ParriedState : ParriedState
 {
     private Enemy1 enemy;
     bool justOne;
+    Vector3 tempDirection;
 
     public E1_ParriedState(Entity entity, FiniteStateMachine stateMachine,Enemy1 enemy,string name) : base(entity, stateMachine,name)
     {
@@ -20,6 +21,7 @@ public class E1_ParriedState : ParriedState
         //enemy.PlayHitParticle();   
         //enemy.DecreaseHealth(enemy.damageTaken);
         //enemy.isHitAnimFinished = false;
+         tempDirection = enemy.GetDirectionToPlayer(); 
     }
         
     public override void Exit()
@@ -38,7 +40,7 @@ public class E1_ParriedState : ParriedState
     {
         base.LogicUpdate();
 
-        enemy.agent.Move(enemy.GetDirectionToPlayer() * -5f * Time.deltaTime);
+        enemy.agent.Move(-5f * Time.deltaTime * tempDirection);
 
         //if (enemy.IsEnemyDead() && stateMachine.currentState !=enemy.deathState)
         //{            

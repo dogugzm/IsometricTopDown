@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class E1_DeathState : State
+public class E1_DeathState : DeathState
 {
     private Enemy1 enemy;
     public E1_DeathState(Entity entity, FiniteStateMachine stateMachine,Enemy1 enemy,string name) : base(entity, stateMachine,name)
@@ -12,15 +12,8 @@ public class E1_DeathState : State
 
     public override void Enter()
     {
-        
         base.Enter();
-        
-        entity.agent.isStopped = true;
-        entity.agent.ResetPath();
-
-        enemy.Anim.SetBool("isDeath", true);
-        //particle, anim vb oynat
-        entity.DestroyMe(2f);
+        enemy.Anim.SetBool("isDead",true);    
     }
 
     public override void Exit()
@@ -31,5 +24,15 @@ public class E1_DeathState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
+    }
+
+    IEnumerator Death()
+    {
+        yield return new WaitForSeconds(3f);
+
+
+
+
     }
 }

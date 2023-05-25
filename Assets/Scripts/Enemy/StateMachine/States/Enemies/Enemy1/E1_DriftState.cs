@@ -3,6 +3,8 @@ using UnityEngine;
 public class E1_DriftState : IdleState
 {
     private Enemy1 enemy;
+    Vector3 tempDirection;
+
 
     public E1_DriftState(Entity entity, FiniteStateMachine stateMachine, Enemy1 enemy, string name) : base(entity, stateMachine, name)
     {
@@ -17,6 +19,7 @@ public class E1_DriftState : IdleState
         enemy.DecreaseHealth(enemy.damageTaken);
         enemy.isDriftAnimFinished = false;
         enemy.Anim.SetBool("isHitBig", true);
+        tempDirection = enemy.GetDirectionToPlayer();
 
     }
 
@@ -32,11 +35,23 @@ public class E1_DriftState : IdleState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        enemy.agent.Move(enemy.GetDirectionToPlayer() * -5f * Time.deltaTime);
+        enemy.LookAtPlayer();
+
+        enemy.agent.Move(tempDirection * -10f * Time.deltaTime);
+
+
 
         if (enemy.isDriftAnimFinished)
         {
-            stateMachine.ChangeState(enemy.idleState);
+            if (enemy.IsEnemyDead())
+            {
+                stateMachine.ChangeState(enemy.deathState);
+
+            }
+            else
+            {
+                stateMachine.ChangeState(enemy.idleState);
+            }
 
         }
 
