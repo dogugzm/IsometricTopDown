@@ -6,6 +6,8 @@ public class EnemyBow : Entity
 {
     public ParticleSystem hitEffect;
     public GameObject Projectile;
+    public Transform ProjectilePosition;
+
 
     public EBow_IdleState idleState { get; private set; }
     //public E1_MoveState moveState { get; private set; }

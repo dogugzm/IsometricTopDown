@@ -26,6 +26,8 @@ public class EBow_AttackState : AttackState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        enemy.LookAtPlayer();
+
         //if (enemy.isParried)
         //{
         //    stateMachine.ChangeState(enemy.parriedState);
@@ -46,7 +48,7 @@ public class EBow_AttackState : AttackState
     IEnumerator InstantiateBowProjectile()
     {
         yield return new WaitForSeconds(0f);    
-        Debug.Log("Fire");
+        Enemy.Instantiate(enemy.Projectile, enemy.ProjectilePosition.position, enemy.ProjectilePosition.rotation);
         stateMachine.ChangeState(enemy.idleState);
     }
 

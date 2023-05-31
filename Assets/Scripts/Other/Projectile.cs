@@ -62,7 +62,7 @@ public class Projectile : MonoBehaviour
 
     private void HitSomething()
     {
-            GameObject a  =Instantiate(hitPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+            GameObject a = Instantiate(hitPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
             Destroy(a, 2f);
             Destroy(gameObject);
     }

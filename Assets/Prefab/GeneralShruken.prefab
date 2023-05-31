@@ -270,9 +270,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e879be8a3ec7c884bacca2bf8938501d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magicBallSpeed: 30
+  projectileSpeed: 25
   hitPrefab: {fileID: 1028841169982204, guid: 9f075fca4d0264e43bd0d224094dab78, type: 3}
-  magicBallRotSpeed: 40
+  projectileRotationSpeed: 45
+  projectileMesh: {fileID: 1624727314565144772}
 --- !u!65 &6187435805738790787
 BoxCollider:
   m_ObjectHideFlags: 0
