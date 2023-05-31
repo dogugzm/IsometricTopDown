@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy1 : Entity
@@ -16,13 +14,13 @@ public class Enemy1 : Entity
 
 
     public override void Start()
-    {   
-        base.Start(); 
-        moveState = new E1_MoveState(this, stateMachine, this,"Move");
-        idleState = new E1_IdleState(this, stateMachine, this,"Idle");
-        knockBackState = new E1_KnockBackState(this, stateMachine, this,"Hit");
-        deathState = new E1_DeathState(this, stateMachine, this,"Death");
-        attackState = new E1_AttackState(this, stateMachine, this,"Attack");
+    {
+        base.Start();
+        moveState = new E1_MoveState(this, stateMachine, this, "Move");
+        idleState = new E1_IdleState(this, stateMachine, this, "Idle");
+        knockBackState = new E1_KnockBackState(this, stateMachine, this, "Hit");
+        deathState = new E1_DeathState(this, stateMachine, this, "Death");
+        attackState = new E1_AttackState(this, stateMachine, this, "Attack");
         driftState = new E1_DriftState(this, stateMachine, this, "Drift");
         knockBackContinueState = new E1_KnockBackContinueState(this, stateMachine, this, "Hit2");
         parriedState = new E1_ParriedState(this, stateMachine, this, "Parried");
