@@ -18,15 +18,16 @@ public class State
     }
 
     public virtual void Enter()
-    {
-        
+    {   
        entity.ShowState(name);      
        startingTime = Time.time;
     }
+
     public virtual void Exit()
     {
 
     }
+
     public virtual void LogicUpdate()
     {
 

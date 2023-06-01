@@ -14,6 +14,7 @@ public class EBow_AttackState : AttackState
     public override void Enter()
     {
         base.Enter();
+        enemy.agent.ResetPath();
         enemy.Anim.SetTrigger("isAttacking");
         enemy.isAttackAnimFinished = false;
     }
@@ -38,6 +39,7 @@ public class EBow_AttackState : AttackState
         //    enemy.agent.SetDestination(enemy.Target.position);
         //}
         //
+
         if (enemy.isAttackAnimFinished)
         {
             enemy.StartCoroutine(InstantiateBowProjectile());            

@@ -15,7 +15,14 @@ public class EBow_IdleState : IdleState
     {        
         base.Enter();
         enemy.agent.ResetPath();
-        coroutine = enemy.ChangeStateInSeconds(Random.Range(2,5), enemy.attackState);
+        if (enemy.GetDistanceBetweenPlayer() > 15)
+        {
+            coroutine = enemy.ChangeStateInSeconds(Random.Range(2, 4), enemy.attackState);
+        }
+        else
+        {
+            coroutine = enemy.ChangeStateInSeconds(Random.Range(2,5), enemy.moveState);
+        }
         enemy.StartCoroutine(coroutine);
     }
 
@@ -30,9 +37,7 @@ public class EBow_IdleState : IdleState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        enemy.LookAtPlayer();
-
-
+        enemy.LookAtPlayer();       
     }
 
 
