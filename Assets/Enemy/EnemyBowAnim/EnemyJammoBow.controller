@@ -11,6 +11,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: isHit2
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isDead
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6559091717608044577}
   m_Solo: 0
@@ -1002,7 +1005,7 @@ AnimatorStateMachine:
     m_Position: {x: -820, y: -310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7502683543609031921}
-    m_Position: {x: -820, y: -450, z: 0}
+    m_Position: {x: -820, y: -470, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3462374897699377639}
     m_Position: {x: 110, y: -380, z: 0}

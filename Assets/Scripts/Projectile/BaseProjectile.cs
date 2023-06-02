@@ -7,7 +7,7 @@ public class BaseProjectile : MonoBehaviour
     private Vector3 Target;
 
     [SerializeField] private float projectileSpeed;
-    [SerializeField] private GameObject hitPrefab;
+    [SerializeField] protected GameObject hitPrefab;
     [SerializeField] private float projectileRotationSpeed;
     [SerializeField] private Transform projectileMesh;
 
@@ -33,24 +33,12 @@ public class BaseProjectile : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         //It will go on interface
 
-        if (other.CompareTag("Enemy"))
-        {
-            GameObject a = Instantiate(hitPrefab, other.gameObject.transform.position, Quaternion.identity);
-            Destroy(a, 2f);
-            Destroy(gameObject);
-            Destroy(other.gameObject);
-        }
+        
 
-        if (other.CompareTag("Player"))
-        {
-            GameObject a = Instantiate(hitPrefab, other.gameObject.transform.position, Quaternion.identity);
-            Destroy(a, 2f);
-            Destroy(gameObject);
-            //Destroy(other.gameObject);
-        }
+        
     }
 }

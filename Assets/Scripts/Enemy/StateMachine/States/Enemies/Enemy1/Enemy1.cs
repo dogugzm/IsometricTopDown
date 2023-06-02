@@ -40,6 +40,17 @@ public class Enemy1 : Entity
             stateMachine.ChangeState(knockBackState);
         }
     }
+    public override bool IsInDamagableState()
+    {
+        if (stateMachine.currentState == deathState)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
     public override void OnHitGreate()
     {

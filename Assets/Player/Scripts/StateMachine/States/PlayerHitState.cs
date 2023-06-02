@@ -7,7 +7,6 @@ public class PlayerHitState : PlayerState
     public PlayerHitState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
 
-
     }
 
     public override void Enter()

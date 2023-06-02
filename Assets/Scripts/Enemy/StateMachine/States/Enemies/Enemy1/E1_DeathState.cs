@@ -13,6 +13,8 @@ public class E1_DeathState : DeathState
     public override void Enter()
     {
         base.Enter();
+        enemy.agent.ResetPath();
+        enemy.rb.isKinematic = true;
         enemy.Anim.SetBool("isDead",true);    
     }
 

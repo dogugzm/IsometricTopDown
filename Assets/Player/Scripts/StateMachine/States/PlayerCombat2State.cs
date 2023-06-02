@@ -12,11 +12,13 @@ public class PlayerCombat2State : PlayerState
 
     public PlayerCombat2State(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
+
     }
 
     public override void Enter()
     {
         base.Enter();
+        target = null;
         isCombotContinue = false;
         //player.Anim.ResetTrigger("isAttacking2");                 
         player.equipmentController.ChangeState(swordState);

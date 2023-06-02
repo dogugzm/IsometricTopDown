@@ -15,7 +15,6 @@ public class PlayerRollState : PlayerState
 
     public override void Enter()
     {
-
         Roll();
         player.effectController.DashEffectActivate();
         base.Enter();
@@ -26,10 +25,12 @@ public class PlayerRollState : PlayerState
     {
         base.Exit();
         player.StartCoroutine(DashCooldown());
+
         if (dashCombatActivated)
         {
             return;
         }
+
         player.effectController.NormalProfile();
     }
 
@@ -41,18 +42,15 @@ public class PlayerRollState : PlayerState
         {
             dashCombatActivated = true;
         }
+        if (dashCombatActivated)
+        {
+            stateMachine.ChangeState(player.DashCombatState);
+        }
         if (isRollAnimationFinished)
         {
-            if (dashCombatActivated)
-            {
-                stateMachine.ChangeState(player.DashCombatState);
-
-
-            }
-            else
-            {
-                stateMachine.ChangeState(player.IdleState);
-            }
+            
+             stateMachine.ChangeState(player.IdleState);
+            
         }
        
     }

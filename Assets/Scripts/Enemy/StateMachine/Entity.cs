@@ -28,6 +28,7 @@ public class Entity : MonoBehaviour, IDamagable
     public bool isParryAnimFinished;
     public bool isParriable;
     //public bool isParried = false;
+    public bool isDeath;
 
 
 
@@ -39,7 +40,7 @@ public class Entity : MonoBehaviour, IDamagable
 
     public virtual void Start()
     {
-
+        isDeath = false;
         goToHurtState = false;
         isAttackAnimFinished = false;
         isHitAnimFinished = false;
@@ -228,6 +229,11 @@ public class Entity : MonoBehaviour, IDamagable
 
             }
         }
+    }
+
+    public virtual bool IsInDamagableState()
+    {
+        return true;
     }
 
     //TODO: damagable stateler eklenmeli ve death statinde daha fazla damage yememeliyim.

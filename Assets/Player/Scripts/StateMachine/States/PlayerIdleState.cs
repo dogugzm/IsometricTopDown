@@ -14,7 +14,6 @@ public class PlayerIdleState : PlayerState
     {
         base.Enter();
         player.controller.Move(Vector3.zero);
-
     }
 
     public override void Exit()

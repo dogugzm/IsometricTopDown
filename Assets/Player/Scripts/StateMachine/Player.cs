@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour,IDamagable
 {
     #region ANIMATION SMOOTH VARIABLES
     [Header("Animation Smoothing")]
@@ -84,11 +84,10 @@ public class Player : MonoBehaviour
     public ParticleSystem SwordParticle;
     public ParticleSystem ParryParticle;
 
-
     bool chainStarted;
 
-
     public string currentStateText;
+    public ParticleSystem hitEffect;
 
     /// <summary>
     /// Player's sword will activate or deactivate with in given seconds.
@@ -120,9 +119,8 @@ public class Player : MonoBehaviour
         HeavyAttackState = new PlayerHeavyAttackState(this, StateMachine, playerData, "HEAVY_ATTACK");
         ParryState = new PlayerParryState(this, StateMachine, playerData, "PARRY");
 
-
-
     }
+
     private void Start()
     {
         Sword.SetActive(false);
@@ -150,7 +148,18 @@ public class Player : MonoBehaviour
         RaycastHit info;
         if (Physics.SphereCast(transform.position, 0.5f, AttackInputDirection, out info, 5, layerMask))
         {
-            currentEnemy = info.collider.gameObject.GetComponent<Entity>();
+            if (!info.collider.gameObject.GetComponent<Entity>().isDeath)
+            {
+                currentEnemy = info.collider.gameObject.GetComponent<Entity>();
+            }
+        }
+    }
+
+    public void ClearCurrentEnemyIfSame(Entity enemy)
+    {
+        if (currentEnemy == enemy)
+        {        
+            currentEnemy = null;    
         }
     }
 
@@ -182,6 +191,7 @@ public class Player : MonoBehaviour
         }
 
     }
+
     private void VerticalMovement()
     {
         if (controller.isGrounded && verticalVelocity.y < 0)
@@ -292,7 +302,6 @@ public class Player : MonoBehaviour
         else
         {
             return true;
-
         }
     }
 
@@ -310,8 +319,18 @@ public class Player : MonoBehaviour
         Gizmos.DrawRay(transform.position, AttackInputDirection);
         //Gizmos.DrawWireSphere(transform.position, 1);
         if (currentEnemy != null)
-            Gizmos.DrawSphere(currentEnemy.transform.position, 1f);
-      
+            Gizmos.DrawSphere(currentEnemy.transform.position, 1f);      
     }
 
+    public void OnHit()
+    {
+        hitEffect.Play();
+        health -= damageTaken;
+        healthBar.SetHealth(health);
+    }
+
+    public void OnHitGreate()
+    {
+        throw new System.NotImplementedException();
+    }
 }

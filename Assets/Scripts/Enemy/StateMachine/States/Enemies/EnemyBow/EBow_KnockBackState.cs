@@ -6,7 +6,6 @@ public class EBow_KnockBackState : KnockBackState
 {
     private EnemyBow enemy;
     
-
     public EBow_KnockBackState(Entity entity, FiniteStateMachine stateMachine,EnemyBow enemy,string name) : base(entity, stateMachine,name)
     {
         this.enemy = enemy;
@@ -19,7 +18,6 @@ public class EBow_KnockBackState : KnockBackState
         enemy.PlayHitParticle();   
         enemy.DecreaseHealth(enemy.damageTaken);
         //enemy.StartCoroutine(Effect());
-
     }
 
     public override void Exit()
@@ -29,7 +27,6 @@ public class EBow_KnockBackState : KnockBackState
         enemy.isHitAnimFinished = false;
         enemy.Anim.SetBool("isHit", false);
     }
-
 
     public override void LogicUpdate()
     {
@@ -53,10 +50,9 @@ public class EBow_KnockBackState : KnockBackState
             {
                 stateMachine.ChangeState(enemy.idleState);
             }
-
         }
-
     }
+
     //IEnumerator Effect()
     //{
     //    enemy.agent.speed = 10;

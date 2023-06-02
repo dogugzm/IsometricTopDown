@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EBow_KnockBackContinueState : KnockBackState
@@ -19,6 +17,11 @@ public class EBow_KnockBackContinueState : KnockBackState
         enemy.PlayHitParticle();   
         enemy.DecreaseHealth(enemy.damageTaken);
         enemy.isHit2AnimFinished = false;
+        if (enemy.IsEnemyDead())
+        {
+            stateMachine.ChangeState(enemy.deathState);
+
+        }
         //enemy.StartCoroutine(Effect());
     }
 
@@ -34,17 +37,13 @@ public class EBow_KnockBackContinueState : KnockBackState
         base.LogicUpdate();   
 
         enemy.agent.Move(enemy.GetDirectionToPlayer() * -2f * Time.deltaTime);
+       
 
         if (enemy.isHit2AnimFinished)
-        {
-            if (enemy.IsEnemyDead())
-            {
-                stateMachine.ChangeState(enemy.deathState);
-            }
-            else
-            {
-                stateMachine.ChangeState(enemy.idleState);
-            }
+        {    
+            
+          stateMachine.ChangeState(enemy.idleState);
+            
 
         }
 

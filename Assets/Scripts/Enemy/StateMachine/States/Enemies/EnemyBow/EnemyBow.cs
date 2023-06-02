@@ -60,5 +60,16 @@ public class EnemyBow : Entity
         //stateMachine.ChangeState(parriedState);
     }
 
+    public override bool IsInDamagableState()
+    {
+        if (stateMachine.currentState == deathState)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
 }

@@ -36,18 +36,21 @@ public class FieldOfView : MonoBehaviour
             {
                 if (enemyCollider.gameObject.layer == 7) //enemy layer 
                 {
-                    enemyCollider.TryGetComponent<IDamagable>(out IDamagable damagableEnemy);
-                    if (myEvent.intParameter == 0)
+                    if (enemyCollider.GetComponent<Entity>().IsInDamagableState())
                     {
-                        damagableEnemy.OnHit();
-                    }
-                    else if (myEvent.intParameter == 1)
-                    {
-                        damagableEnemy.OnHitGreate();
+                        enemyCollider.TryGetComponent<IDamagable>(out IDamagable damagableEnemy);
+                        if (myEvent.intParameter == 0)
+                        {
+                            damagableEnemy.OnHit();
+                        }
+
+                        else if (myEvent.intParameter == 1)
+                        {
+                            damagableEnemy.OnHitGreate();
+
+                        }
 
                     }
-
-
                 }
                 else if (enemyCollider.gameObject.layer == 9)
                 {

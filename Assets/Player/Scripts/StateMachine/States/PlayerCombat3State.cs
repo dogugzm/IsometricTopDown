@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombat3State : PlayerState
@@ -11,16 +10,18 @@ public class PlayerCombat3State : PlayerState
 
     public PlayerCombat3State(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string stateName) : base(player, stateMachine, playerData, stateName)
     {
+
+
     }
 
     public override void Enter()
     {
         base.Enter();
+        target = null;
         player.fieldOfViewScript.Combat3ValuesActivate();  
         player.Anim.ResetTrigger("isAttacking");                 
         player.equipmentController.ChangeState(swordState);
         player.Anim.SetTrigger("isAttacking3");
-  
         player.Sword.SetActive(true);
         player.SwordParticle.Play();
 
@@ -30,7 +31,7 @@ public class PlayerCombat3State : PlayerState
             {
                 player.StartCoroutine(FinalCutDeath());
             }
-        target = player.currentEnemy.transform;
+            target = player.currentEnemy.transform;
         }
 
 

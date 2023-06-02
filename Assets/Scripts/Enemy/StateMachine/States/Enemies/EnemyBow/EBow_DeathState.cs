@@ -13,6 +13,8 @@ public class EBow_DeathState : DeathState
     public override void Enter()
     {
         base.Enter();
+        enemy.agent.ResetPath();
+        enemy.rb.isKinematic = true;
         enemy.Anim.SetBool("isDead",true);    
     }
 
@@ -24,12 +26,10 @@ public class EBow_DeathState : DeathState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
     }
 
     IEnumerator Death()
     {
         yield return new WaitForSeconds(3f);
-
     }
 }

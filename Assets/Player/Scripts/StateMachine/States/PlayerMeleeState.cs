@@ -20,6 +20,7 @@ public class PlayerMeleeState : PlayerState
     {
 
         base.Enter();
+        target = null;
         isCombatContinue = false;
         player.Anim.ResetTrigger("isAttacking");                 
         player.equipmentController.ChangeState(swordState);
@@ -27,14 +28,13 @@ public class PlayerMeleeState : PlayerState
         player.Sword.SetActive(true);
         player.SwordParticle.Play(); //TODO:4_SwordTrail
 
-        if (player.currentEnemy!= null)
+        if (player.currentEnemy != null)
         {
             if (player.currentEnemy.IsLastHit())
             {
                 player.StartCoroutine(FinalCutDeath());
-            }
+            }     
             target = player.currentEnemy.transform;
-
         }
         
     }
@@ -55,7 +55,7 @@ public class PlayerMeleeState : PlayerState
         base.LogicalUpdate();
 
         if (target!= null)
-        {
+        {            
             player.transform.DOLookAt(target.position, 0.2f);
             player.transform.DOMove(player.TargetOffset(target), 1f);
 
