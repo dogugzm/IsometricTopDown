@@ -4,7 +4,7 @@ using UnityEngine;
 public class EBow_AttackState : AttackState
 {
     EnemyBow enemy;
-    Vector3 lastSeenPlayerLoc;
+    bool attacked;
 
     public EBow_AttackState(Entity entity, FiniteStateMachine stateMachine, EnemyBow enemy, string name) : base(entity, stateMachine, name)
     {
@@ -14,6 +14,7 @@ public class EBow_AttackState : AttackState
     public override void Enter()
     {
         base.Enter();
+        attacked = false;
         enemy.agent.ResetPath();
         enemy.Anim.SetTrigger("isAttacking");
         enemy.isAttackAnimFinished = false;
@@ -29,27 +30,18 @@ public class EBow_AttackState : AttackState
         base.LogicUpdate();
         enemy.LookAtPlayer();
 
-        //if (enemy.isParried)
-        //{
-        //    stateMachine.ChangeState(enemy.parriedState);
-        //    return;
-        //}
-        //if (!animationPlayed)
-        //{
-        //    enemy.agent.SetDestination(enemy.Target.position);
-        //}
-        //
 
-        if (enemy.isAttackAnimFinished)
+        if (enemy.isAttackAnimFinished && !attacked)
         {
-            enemy.StartCoroutine(InstantiateBowProjectile());            
+            enemy.StartCoroutine(InstantiateBowProjectile());
         }
-        
+
     }
 
     IEnumerator InstantiateBowProjectile()
     {
-        yield return new WaitForSeconds(0f);    
+        attacked = true;
+        yield return new WaitForSeconds(0f);
         Enemy.Instantiate(enemy.Projectile, enemy.ProjectilePosition.position, enemy.ProjectilePosition.rotation);
         stateMachine.ChangeState(enemy.idleState);
     }
